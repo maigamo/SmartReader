@@ -8,6 +8,7 @@ declare module 'obsidian' {
         };
         vault: Vault;
         workspace: Workspace;
+        getLanguage(): string;
     }
 
     export interface Vault {
@@ -51,9 +52,14 @@ declare module 'obsidian' {
         setText: (text: string) => void;
     }
 
-    export interface PluginSettingTab {
-        containerEl: HTMLElement;
+    export class PluginSettingTab {
         app: App;
+        plugin: any;
+        containerEl: HTMLElement;
+        
+        constructor(app: App, plugin: any);
+        display(): void;
+        hide(): void;
     }
 
     export interface Plugin {
@@ -82,6 +88,8 @@ declare module 'obsidian' {
     }
 
     export class Setting {
+        nameEl: HTMLElement;
+        
         constructor(containerEl: HTMLElement);
         setName(name: string): this;
         setDesc(desc: string): this;
@@ -93,7 +101,6 @@ declare module 'obsidian' {
         addDropdown(cb: (dropdown: any) => any): this;
         addSlider(cb: (slider: any) => any): this;
         addColorPicker(cb: (colorPicker: any) => any): this;
-        nameEl: HTMLElement;
     }
 
     export function MarkdownRenderer(markdown: string, el: HTMLElement, sourcePath: string, component: any): void;

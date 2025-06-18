@@ -5,6 +5,13 @@
             "highlighting": "高亮规则",
             "appearance": "外观样式",
             
+            "language": "界面语言",
+            "language_description": "选择界面语言",
+            "language_auto": "自动",
+            "language_en": "English",
+            "language_zh": "中文",
+            "language_ja": "日本語",
+            
             "auto_process": "自动处理新文档",
             "auto_process_description": "打开笔记时自动应用高亮",
             "delay": "自动模式延迟",

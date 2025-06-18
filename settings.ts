@@ -1,6 +1,6 @@
-import { App, PluginSettingTab, Setting, TextComponent, DropdownComponent, ColorComponent, setIcon, Notice, ButtonComponent } from 'obsidian';
+import { App, PluginSettingTab, Setting, setIcon, Notice } from 'obsidian';
 import { SmartReaderPlugin } from './main';
-import { t } from './i18n';
+import { t, clearTranslationCache } from './i18n';
 
 export class SmartReaderSettingTab extends PluginSettingTab {
 	plugin: SmartReaderPlugin;
@@ -24,7 +24,7 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 	renderBehaviorSettings(containerEl: HTMLElement): void {
 		// 章节标题
 		const behaviorHeading = new Setting(containerEl)
-			.setName(t(this.app, 'smartreader.settings.behavior'))
+			.setName(t(this.app, 'smartreader.settings.behavior', this.plugin.settings))
 			.setHeading();
 			
 		// 添加图标到标题
@@ -33,8 +33,8 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 
 		// 自动处理新文档
 		const autoProcessSetting = new Setting(containerEl)
-			.setName(t(this.app, 'smartreader.settings.auto_process'))
-			.setDesc(t(this.app, 'smartreader.settings.auto_process_description'))
+			.setName(t(this.app, 'smartreader.settings.auto_process', this.plugin.settings))
+			.setDesc(t(this.app, 'smartreader.settings.auto_process_description', this.plugin.settings))
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.autoProcess)
 				.onChange(async (value) => {
@@ -52,8 +52,8 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 		// 如果自动处理开启，显示自动模式延迟设置
 		if (this.plugin.settings.autoProcess) {
 			const delaySetting = new Setting(containerEl)
-				.setName(t(this.app, 'smartreader.settings.delay'))
-				.setDesc(t(this.app, 'smartreader.settings.delay_description'))
+				.setName(t(this.app, 'smartreader.settings.delay', this.plugin.settings))
+				.setDesc(t(this.app, 'smartreader.settings.delay_description', this.plugin.settings))
 				.addSlider(slider => slider
 					.setLimits(1, 30, 1)
 					.setValue(this.plugin.settings.autoProcessDelay)
@@ -83,8 +83,8 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 
 		// 最小处理长度
 		const minLengthSetting = new Setting(containerEl)
-			.setName(t(this.app, 'smartreader.settings.min_length'))
-			.setDesc(t(this.app, 'smartreader.settings.min_length_description'))
+			.setName(t(this.app, 'smartreader.settings.min_length', this.plugin.settings))
+			.setDesc(t(this.app, 'smartreader.settings.min_length_description', this.plugin.settings))
 			.addSlider(slider => slider
 				.setLimits(0, 1000, 50)
 				.setValue(this.plugin.settings.minProcessLength)
@@ -113,8 +113,8 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 
 		// 排除的文件夹
 		const excludedFoldersSetting = new Setting(containerEl)
-			.setName(t(this.app, 'smartreader.settings.excluded_folders'))
-			.setDesc(t(this.app, 'smartreader.settings.excluded_folders_description'));
+			.setName(t(this.app, 'smartreader.settings.excluded_folders', this.plugin.settings))
+			.setDesc(t(this.app, 'smartreader.settings.excluded_folders_description', this.plugin.settings));
 		
 		// 添加图标
 		const excludedFoldersIcon = excludedFoldersSetting.nameEl.createSpan({cls: 'smart-reader-icon setting-icon'});
@@ -140,14 +140,14 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 		
 		// 添加通配符帮助文本
 		const helpText = containerEl.createDiv({cls: 'setting-item-description'});
-		helpText.innerHTML = t(this.app, 'smartreader.settings.excluded_folders_help');
+		helpText.innerHTML = t(this.app, 'smartreader.settings.excluded_folders_help', this.plugin.settings);
 		
 		// 添加测试按钮
 		const testFiltersSetting = new Setting(containerEl)
-			.setName(t(this.app, 'smartreader.settings.test_filters'))
-			.setDesc(t(this.app, 'smartreader.settings.test_filters_description'))
+			.setName(t(this.app, 'smartreader.settings.test_filters', this.plugin.settings))
+			.setDesc(t(this.app, 'smartreader.settings.test_filters_description', this.plugin.settings))
 			.addButton(button => button
-				.setButtonText(t(this.app, 'smartreader.settings.test_button'))
+				.setButtonText(t(this.app, 'smartreader.settings.test_button', this.plugin.settings))
 				.setCta()
 				.onClick(() => {
 					this.testCurrentFileAgainstFilters();
@@ -157,13 +157,44 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 		// 添加图标	
 		const testFiltersIcon = testFiltersSetting.nameEl.createSpan({cls: 'smart-reader-icon setting-icon'});
 		setIcon(testFiltersIcon, 'check-circle-2');
+
+		// 语言设置
+		const languageSetting = new Setting(containerEl)
+			.setName(t(this.app, 'smartreader.settings.language', this.plugin.settings))
+			.setDesc(t(this.app, 'smartreader.settings.language_description', this.plugin.settings))
+			.addDropdown(dropdown => {
+				dropdown
+					.addOption('auto', t(this.app, 'smartreader.settings.language_auto', this.plugin.settings))
+					.addOption('en', t(this.app, 'smartreader.settings.language_en', this.plugin.settings))
+					.addOption('zh', t(this.app, 'smartreader.settings.language_zh', this.plugin.settings))
+					.addOption('ja', t(this.app, 'smartreader.settings.language_ja', this.plugin.settings))
+					.setValue(this.plugin.settings.language)
+					.onChange(async (value: 'auto' | 'en' | 'zh' | 'ja') => {
+						this.plugin.settings.language = value;
+						await this.plugin.saveSettings();
+						
+						// 清除翻译缓存，确保新语言立即生效
+						clearTranslationCache();
+						
+						// 刷新设置界面以使用新语言
+						this.display();
+						
+						// 显示语言切换成功的通知
+						const currentLang = value === 'auto' ? 'auto (follow Obsidian)' : value;
+						new Notice(`Language changed to: ${currentLang}`);
+					});
+			});
+			
+		// 添加图标
+		const languageIcon = languageSetting.nameEl.createSpan({cls: 'smart-reader-icon setting-icon'});
+		setIcon(languageIcon, 'globe');
 	}
 
 	// 第二章节：高亮规则
 	renderHighlightingSettings(containerEl: HTMLElement): void {
 		// 章节标题
 		const highlightingHeading = new Setting(containerEl)
-			.setName(t(this.app, 'smartreader.settings.highlighting'))
+			.setName(t(this.app, 'smartreader.settings.highlighting', this.plugin.settings))
 			.setHeading();
 			
 		// 添加图标到标题
@@ -172,11 +203,11 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 
 		// 间隔类型
 		const intervalTypeSetting = new Setting(containerEl)
-			.setName(t(this.app, 'smartreader.settings.interval_type'))
+			.setName(t(this.app, 'smartreader.settings.interval_type', this.plugin.settings))
 			.addDropdown(dropdown => {
 				dropdown
-					.addOption('word', t(this.app, 'smartreader.settings.word_count'))
-					.addOption('character', t(this.app, 'smartreader.settings.character_count'))
+					.addOption('word', t(this.app, 'smartreader.settings.word_count', this.plugin.settings))
+					.addOption('character', t(this.app, 'smartreader.settings.character_count', this.plugin.settings))
 					.setValue(this.plugin.settings.intervalType)
 					.onChange(async (value: 'word' | 'character') => {
 						this.plugin.settings.intervalType = value;
@@ -193,8 +224,8 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 
 		// 间隔值
 		const intervalValueSetting = new Setting(containerEl)
-			.setName(t(this.app, 'smartreader.settings.interval_value'))
-			.setDesc(t(this.app, 'smartreader.settings.interval_value_description'))
+			.setName(t(this.app, 'smartreader.settings.interval_value', this.plugin.settings))
+			.setDesc(t(this.app, 'smartreader.settings.interval_value_description', this.plugin.settings))
 			.addSlider(slider => slider
 				.setLimits(5, 80, 1)
 				.setValue(this.plugin.settings.intervalValue)

@@ -5,6 +5,13 @@
             "highlighting": "Highlighting Rules",
             "appearance": "Appearance & Style",
             
+            "language": "Language",
+            "language_description": "Select interface language",
+            "language_auto": "Auto",
+            "language_en": "English",
+            "language_zh": "中文",
+            "language_ja": "日本語",
+            
             "auto_process": "Auto-process new documents",
             "auto_process_description": "Automatically apply highlighting when opening notes",
             "delay": "Auto mode delay",
