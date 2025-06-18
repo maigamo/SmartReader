@@ -1,0 +1,59 @@
+{
+    "smartreader": {
+        "settings": {
+            "behavior": "動作と活性化",
+            "highlighting": "ハイライトルール",
+            "appearance": "外観とスタイル",
+            
+            "auto_process": "新しい文書を自動処理",
+            "auto_process_description": "ノートを開くときに自動的にハイライトを適用",
+            "delay": "自動モード遅延",
+            "delay_description": "処理前に待機する秒数",
+            "min_length": "最小長さ",
+            "min_length_description": "これより短い文書をスキップ",
+            "excluded_folders": "除外パス",
+            "excluded_folders_description": "1行に1つのパターン、ワイルドカード(*)対応",
+            "excluded_folders_help": "例：<br>- <code>Templates/</code> - Templatesフォルダ内のすべてのファイルを除外<br>- <code>*.excalidraw</code> - すべての.excalidrawファイルを除外<br>- <code>Archive/*</code> - Archiveとそのサブフォルダ内のすべてのファイルを除外",
+            "test_filters": "現在のファイルをテスト",
+            "test_filters_description": "現在のファイルが処理されるか除外されるかを確認",
+            "test_button": "テスト",
+            
+            "interval_type": "間隔タイプ",
+            "interval_value": "間隔値",
+            "word_count": "単語数",
+            "character_count": "文字数",
+            
+            "highlight_style": "ハイライトスタイル",
+            "highlight_color": "ハイライト色",
+            "style_bold": "太字",
+            "style_color": "色",
+            "style_underline": "下線"
+        },
+        "commands": {
+            "toggle": "速読モードの切り替え",
+            "process_current": "現在の文書を処理",
+            "clear_current": "現在の文書の処理をクリア",
+            "open_settings": "SmartReader設定を開く"
+        },
+        "status": {
+            "enabled": "速読モード有効",
+            "disabled": "速読モード無効",
+            "processing": "文書を処理中...",
+            "processed": "文書が処理されました",
+            "cleared": "文書処理がクリアされました",
+            "error": "文書処理中にエラーが発生しました"
+        },
+        "messages": {
+            "file_excluded": "このファイルは処理から除外されています",
+            "file_too_short": "ファイルが短すぎて処理できません",
+            "not_preview_mode": "プレビューモードに切り替えてください",
+            "no_active_file": "処理するアクティブなファイルがありません",
+            "processing_error": "文書処理中にエラーが発生しました",
+            "clearing_error": "文書形式のクリア中にエラーが発生しました",
+            "test_excluded_path": "このファイルは除外されます（理由：パスパターン）",
+            "test_too_short": "このファイルは除外されます（理由：ファイルが短すぎる）",
+            "test_will_process": "このファイルは処理されます",
+            "test_error": "ファイルフィルターのテスト中にエラーが発生しました"
+        }
+    }
+} 

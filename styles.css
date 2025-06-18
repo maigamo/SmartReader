@@ -1,0 +1,410 @@
+/* 主题变量 - 适配深色和浅色主题 */
+:root {
+    --highlight-color: #FF0000; /* 默认高亮颜色改为红色 */
+    --highlight-underline-thickness: 2px;
+    --animation-duration: 0.2s;
+    --progress-height: 8px;
+    --icon-hover-scale: 1.1;
+}
+
+/* 主题适配 - 深色主题 */
+.theme-dark {
+    --highlight-shadow-color: rgba(255, 0, 0, 0.3);
+    --progress-bg-color: rgba(255, 255, 255, 0.1);
+    --tooltip-bg-color: rgba(0, 0, 0, 0.8);
+}
+
+/* 主题适配 - 浅色主题 */
+.theme-light {
+    --highlight-shadow-color: rgba(255, 0, 0, 0.2);
+    --progress-bg-color: rgba(0, 0, 0, 0.1);
+    --tooltip-bg-color: rgba(50, 50, 50, 0.8);
+}
+
+/* Basic style definitions */
+.smart-reader-highlight {
+    /* Default bold style - only bold, no underline */
+    font-weight: bold;
+    transition: all var(--animation-duration) ease;
+}
+
+/* When highlight style is set to color */
+.smart-reader-highlight-color {
+    color: var(--highlight-color, #FF0000);
+    background-color: transparent;
+    text-shadow: 0 0 1px var(--highlight-shadow-color);
+    transition: all var(--animation-duration) ease;
+}
+
+/* When highlight style is set to underline */
+.smart-reader-highlight-underline {
+    text-decoration: underline;
+    text-decoration-thickness: var(--highlight-underline-thickness);
+    text-decoration-color: var(--highlight-color, #FF0000);
+    transition: all var(--animation-duration) ease;
+}
+
+/* When highlight style is set to bold_underline */
+.smart-reader-highlight-bold-underline {
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-thickness: var(--highlight-underline-thickness);
+    text-decoration-color: var(--highlight-color, #FF0000);
+    color: var(--highlight-color, #FF0000);
+    text-shadow: 0 0 1px var(--highlight-shadow-color);
+    transition: all var(--animation-duration) ease;
+}
+
+/* Used to mark processed elements */
+.smart-reader-processed {
+    /* This class is only used for marking, it shouldn't have visual effects */
+}
+
+/* Settings panel styles */
+.smart-reader-settings .setting-item {
+    border-radius: 5px;
+    transition: background-color var(--animation-duration) ease;
+    padding: 10px;
+    margin-bottom: 8px;
+}
+
+.smart-reader-settings .setting-item:hover {
+    background-color: var(--background-secondary);
+}
+
+/* Settings heading styles */
+.smart-reader-settings .setting-item.heading {
+    margin-top: 30px;
+    border-bottom: 1px solid var(--background-modifier-border);
+    padding-bottom: 10px;
+}
+
+/* Icon styles */
+.smart-reader-icon {
+    transition: transform var(--animation-duration) ease, color var(--animation-duration) ease;
+    margin-right: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.smart-reader-icon:hover {
+    transform: scale(var(--icon-hover-scale));
+    color: var(--interactive-accent);
+}
+
+/* Setting item icons */
+.setting-icon {
+    margin-right: 8px;
+    color: var(--text-muted);
+    vertical-align: middle; /* 改回为垂直居中 */
+}
+
+/* 修复SVG图标位置问题 */
+.smart-reader-settings .setting-item .setting-icon svg {
+    vertical-align: middle; /* 使SVG图标垂直居中对齐 */
+    position: relative;
+    top: 0; /* 重置顶部位置 */
+    bottom: 0; /* 重置底部位置 */
+}
+
+/* 设置图标位置调整 */
+.smart-reader-settings .setting-item .smart-reader-icon.setting-icon {
+    display: inline-flex;
+    align-items: center; /* 图标垂直居中对齐 */
+    position: relative;
+    top: 0; /* 重置顶部位置 */
+    bottom: 0; /* 重置底部位置 */
+}
+
+/* 设置项名称容器调整，确保图标和文字对齐 */
+.smart-reader-settings .setting-item-name {
+    display: flex !important;
+    align-items: center !important; /* 确保内部元素垂直居中 */
+    line-height: normal !important; /* 确保行高合理 */
+    min-height: 24px !important; /* 设置最小高度以容纳图标 */
+}
+
+/* 确保设置图标垂直居中 */
+.smart-reader-settings .setting-item-name .smart-reader-icon.setting-icon {
+    align-self: center !important; /* 强制图标垂直居中对齐 */
+    margin-top: 0 !important; /* 重置顶部边距 */
+    transform: translateY(0) !important; /* 重置Y轴变换 */
+}
+
+/* 确保在移动设备上图标也正确显示 */
+@media (max-width: 768px) {
+    .smart-reader-settings .setting-item-name .smart-reader-icon.setting-icon {
+        transform: translateY(0) !important; /* 保持垂直居中 */
+    }
+}
+
+.setting-item:hover .setting-icon {
+    color: var(--interactive-accent);
+}
+
+/* Color picker enhancements */
+.smart-reader-settings .color-picker-container {
+    transform: scale(1);
+    transition: transform var(--animation-duration) ease;
+}
+
+.smart-reader-settings .color-picker-container:hover {
+    transform: scale(1.05);
+}
+
+/* Dropdown menu enhancements */
+.smart-reader-settings select {
+    transition: border-color var(--animation-duration) ease;
+}
+
+.smart-reader-settings select:hover {
+    border-color: var(--interactive-accent);
+}
+
+/* Slider enhancements */
+.smart-reader-settings .slider {
+    transition: background-color var(--animation-duration) ease;
+}
+
+.smart-reader-settings .slider:hover {
+    background-color: var(--interactive-accent-hover);
+}
+
+/* Toggle button enhancements */
+.smart-reader-settings .checkbox-container {
+    transition: transform var(--animation-duration) ease;
+}
+
+.smart-reader-settings .checkbox-container:hover {
+    transform: scale(1.05);
+}
+
+/* Button enhancements */
+.smart-reader-settings button {
+    transition: transform var(--animation-duration) ease, background-color var(--animation-duration) ease;
+}
+
+.smart-reader-settings button:hover {
+    transform: scale(1.03);
+}
+
+/* Status bar styles */
+.smart-reader-status {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 8px;
+    border-radius: 4px;
+    transition: background-color var(--animation-duration) ease;
+    user-select: none;
+}
+
+.smart-reader-status:hover {
+    background-color: var(--interactive-hover);
+}
+
+.smart-reader-status.enabled {
+    color: var(--interactive-accent);
+}
+
+.smart-reader-status.disabled {
+    color: var(--text-muted);
+}
+
+.smart-reader-status-text {
+    font-size: 0.85em;
+    margin-left: 4px;
+}
+
+/* Ribbon icon styles */
+.side-dock-ribbon-action[data-icon="smart-reader"] {
+    transition: transform var(--animation-duration) ease, color var(--animation-duration) ease;
+}
+
+.side-dock-ribbon-action[data-icon="smart-reader"]:hover {
+    transform: scale(var(--icon-hover-scale));
+}
+
+.side-dock-ribbon-action[data-icon="smart-reader"].is-active {
+    color: var(--interactive-accent);
+}
+
+/* Responsive design: hide status text on small screens */
+@media (max-width: 768px) {
+    .smart-reader-status-text {
+        display: none;
+    }
+}
+
+/* Progress indicator styles */
+.smart-reader-progress-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 280px;
+    padding: 15px;
+    background-color: var(--background-primary);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.smart-reader-progress-container.visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+}
+
+.smart-reader-progress-title-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.smart-reader-progress-icon {
+    color: var(--interactive-accent);
+    margin-right: 8px;
+}
+
+.smart-reader-progress-title {
+    flex-grow: 1;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.smart-reader-progress-close {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity var(--animation-duration) ease;
+}
+
+.smart-reader-progress-close:hover {
+    opacity: 1;
+}
+
+.smart-reader-progress-status {
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: var(--text-muted);
+}
+
+.smart-reader-progress-bar-container {
+    height: var(--progress-height);
+    background-color: var(--progress-bg-color);
+    border-radius: calc(var(--progress-height) / 2);
+    overflow: hidden;
+}
+
+.smart-reader-progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: var(--interactive-accent);
+    transition: width 0.3s ease;
+}
+
+/* Processing indicators */
+.smart-reader-processing {
+    animation: smart-reader-pulse 1.5s infinite;
+}
+
+@keyframes smart-reader-pulse {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+
+/* Highlight animations */
+.smart-reader-highlight {
+    animation: smart-reader-fade-in 0.3s ease;
+}
+
+@keyframes smart-reader-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Tooltip styles */
+.smart-reader-tooltip {
+    position: absolute;
+    background-color: var(--tooltip-bg-color);
+    color: white;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 1000;
+    pointer-events: none;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    transform: translateY(-5px);
+}
+
+.smart-reader-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .smart-reader-progress-container {
+        width: 80%;
+        left: 10%;
+        right: 10%;
+        bottom: 20px;
+    }
+    
+    .smart-reader-settings .setting-item {
+        padding: 8px 5px;
+    }
+}
+
+/* Print styles - hide UI elements when printing */
+@media print {
+    .smart-reader-status,
+    .smart-reader-progress-container,
+    .smart-reader-tooltip {
+        display: none !important;
+    }
+}
+
+/* 图标显示位置的全局调整 - 确保垂直居中显示 */
+.smart-reader-settings .setting-item .setting-icon,
+.smart-reader-settings .setting-item-name .setting-icon,
+.smart-reader-icon.setting-icon {
+    vertical-align: middle !important; /* 强制所有图标垂直居中对齐 */
+    margin-top: 0 !important; /* 重置顶部边距 */
+    position: relative !important; /* 保持相对定位 */
+    top: 0 !important; /* 重置顶部位置 */
+    bottom: 0 !important; /* 重置底部位置 */
+    display: inline-flex !important; /* 保持内联弹性布局 */
+    align-items: center !important; /* 确保内容垂直居中对齐 */
+    justify-content: center !important; /* 水平居中内容 */
+}
+
+/* 修复SVG图标容器的对齐问题 */
+.smart-reader-settings .setting-item .setting-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* 使用transform重置图标位置 */
+.smart-reader-settings svg.lucide-icon,
+.smart-reader-settings .setting-icon svg {
+    transform: translateY(0) !important; /* 重置SVG图标位置 */
+} 

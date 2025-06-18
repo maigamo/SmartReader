@@ -1,0 +1,62 @@
+{
+    "smartreader": {
+        "settings": {
+            "behavior": "Behavior & Activation",
+            "highlighting": "Highlighting Rules",
+            "appearance": "Appearance & Style",
+            
+            "auto_process": "Auto-process new documents",
+            "auto_process_description": "Automatically apply highlighting when opening notes",
+            "delay": "Auto mode delay",
+            "delay_description": "Seconds to wait before processing",
+            "min_length": "Minimum length",
+            "min_length_description": "Skip documents shorter than this",
+            "excluded_folders": "Excluded paths",
+            "excluded_folders_description": "One pattern per line, supports wildcards (*)",
+            "excluded_folders_help": "Examples:<br>- <code>Templates/</code> - excludes all files in Templates folder<br>- <code>*.excalidraw</code> - excludes all .excalidraw files<br>- <code>Archive/*</code> - excludes all files in Archive and subfolders",
+            "test_filters": "Test current file",
+            "test_filters_description": "Check if the current file would be processed or excluded",
+            "test_button": "Test",
+            
+            "interval_type": "Interval type",
+            "interval_value": "Interval value",
+            "interval_value_description": "Number of words or characters between highlights. Accepts values from 5 to 500.",
+            "word_count": "Word count",
+            "character_count": "Character count",
+            
+            "highlight_style": "Highlight style",
+            "highlight_color": "Highlight color",
+            "style_bold": "Bold",
+            "style_color": "Color",
+            "style_underline": "Underline",
+            "style_bold_underline": "Bold + Underline"
+        },
+        "commands": {
+            "toggle": "Toggle speed reading mode",
+            "process_current": "Process current document",
+            "clear_current": "Clear current document",
+            "open_settings": "Open SmartReader settings"
+        },
+        "status": {
+            "enabled": "Speed reading enabled",
+            "disabled": "Speed reading disabled",
+            "processing": "Processing document...",
+            "processed": "Document processed",
+            "cleared": "Document cleared",
+            "error": "Error processing document"
+        },
+        "messages": {
+            "file_excluded": "File excluded from processing",
+            "file_too_short": "File too short to process",
+            "not_preview_mode": "Please switch to reading mode (preview mode) to use speed reading",
+            "not_markdown_view": "Please open a Markdown document",
+            "no_active_file": "No active file to process",
+            "processing_error": "Error processing document",
+            "clearing_error": "Error clearing document formatting",
+            "test_excluded_path": "This file would be EXCLUDED due to path pattern",
+            "test_too_short": "This file would be EXCLUDED due to being too short",
+            "test_will_process": "This file WILL BE processed",
+            "test_error": "Error testing file filters"
+        }
+    }
+} 
