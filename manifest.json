@@ -1,0 +1,10 @@
+{
+	"id": "smart-reader",
+	"name": "SmartReader",
+	"version": "1.0.0",
+	"minAppVersion": "1.8.8",
+	"description": "Helps speed reading by intelligently highlighting key words in documents.",
+	"author": "SmartReader Team",
+	"authorUrl": "https://github.com/smartreader",
+	"isDesktopOnly": false
+} 

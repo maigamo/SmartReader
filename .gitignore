@@ -1,0 +1,16 @@
+# 忽略编译生成的文件
+*.js
+*.js.map
+
+# 忽略文档目录
+docs/
+
+# 忽略构建目录
+build/
+
+# 常见的忽略项
+node_modules/
+.DS_Store
+.idea/
+.vscode/
+*.log 

@@ -1,0 +1,62 @@
+{
+    "smartreader": {
+        "settings": {
+            "behavior": "行为与激活",
+            "highlighting": "高亮规则",
+            "appearance": "外观样式",
+            
+            "auto_process": "自动处理新文档",
+            "auto_process_description": "打开笔记时自动应用高亮",
+            "delay": "自动模式延迟",
+            "delay_description": "处理前等待的秒数",
+            "min_length": "最小长度",
+            "min_length_description": "跳过短于此长度的文档",
+            "excluded_folders": "排除的路径",
+            "excluded_folders_description": "每行一个模式，支持通配符(*)",
+            "excluded_folders_help": "示例：<br>- <code>Templates/</code> - 排除Templates文件夹中的所有文件<br>- <code>*.excalidraw</code> - 排除所有.excalidraw文件<br>- <code>Archive/*</code> - 排除Archive及其子文件夹中的所有文件",
+            "test_filters": "测试当前文件",
+            "test_filters_description": "检查当前文件是否会被处理或排除",
+            "test_button": "测试",
+            
+            "interval_type": "间隔类型",
+            "interval_value": "间隔值",
+            "interval_value_description": "高亮之间的单词或字符数。接受值从5到80。",
+            "word_count": "按词数",
+            "character_count": "按字符数",
+            
+            "highlight_style": "高亮样式",
+            "highlight_color": "高亮颜色",
+            "style_bold": "加粗",
+            "style_color": "颜色",
+            "style_underline": "下划线",
+            "style_bold_underline": "加粗+下划线"
+        },
+        "commands": {
+            "toggle": "切换速读模式",
+            "process_current": "处理当前文档",
+            "clear_current": "清除当前文档处理",
+            "open_settings": "打开SmartReader设置"
+        },
+        "status": {
+            "enabled": "速读模式已启用",
+            "disabled": "速读模式已禁用",
+            "processing": "正在处理文档...",
+            "processed": "文档已处理",
+            "cleared": "文档处理已清除",
+            "error": "处理文档时出错"
+        },
+        "messages": {
+            "file_excluded": "该文件已被排除处理",
+            "file_too_short": "文件太短，无法处理",
+            "not_preview_mode": "请切换到阅读模式（预览模式）才能使用速读功能",
+            "not_markdown_view": "请打开一个Markdown文档",
+            "no_active_file": "没有活动文件可处理",
+            "processing_error": "处理文档时出错",
+            "clearing_error": "清除文档格式时出错",
+            "test_excluded_path": "此文件将被排除，原因：路径匹配排除规则",
+            "test_too_short": "此文件将被排除，原因：文件长度太短",
+            "test_will_process": "此文件将会被处理",
+            "test_error": "测试文件过滤器时出错"
+        }
+    }
+} 
