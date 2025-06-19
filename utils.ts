@@ -95,15 +95,13 @@ export function safelySetInnerHTML(element: HTMLElement, html: string): void {
         
         // 创建临时元素并设置内容
         const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = sanitizeHTML(html);
+        tempDiv.textContent = html.replace(/<[^>]*>/g, '');
         
         // 将所有子节点移动到目标元素
         while (tempDiv.firstChild) {
             element.appendChild(tempDiv.firstChild);
         }
     } catch (error) {
-        console.error('Failed to set innerHTML:', error);
-        
         // 出错时使用文本回退
         element.textContent = html.replace(/<[^>]*>/g, '');
     }
@@ -226,6 +224,6 @@ export function removeAllProcessing(container: HTMLElement): void {
         
         // 恢复原始内容（移除所有高亮span）
         const originalText = el.textContent || '';
-        el.innerHTML = originalText;
+        el.textContent = originalText;
     });
 } 

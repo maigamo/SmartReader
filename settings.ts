@@ -140,7 +140,7 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 		
 		// 添加通配符帮助文本
 		const helpText = containerEl.createDiv({cls: 'setting-item-description'});
-		helpText.innerHTML = t(this.app, 'smartreader.settings.excluded_folders_help', this.plugin.settings);
+		helpText.textContent = t(this.app, 'smartreader.settings.excluded_folders_help', this.plugin.settings);
 		
 		// 添加测试按钮
 		const testFiltersSetting = new Setting(containerEl)
@@ -266,13 +266,11 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 		// 调整滑块和输入框的宽度
 		const sliderEl = intervalValueSetting.controlEl.querySelector('.slider') as HTMLElement;
 		if (sliderEl) {
-			sliderEl.style.width = '180px';
-		}
+			sliderEl.addClass('smart-reader-slider'); }
 		
 		const inputEl = intervalValueSetting.controlEl.querySelector('input[type="text"]') as HTMLElement;
 		if (inputEl) {
-			inputEl.style.width = '50px';
-		}
+			inputEl.addClass('smart-reader-input'); }
 		
 		// 添加图标
 		const intervalValueIcon = intervalValueSetting.nameEl.createSpan({cls: 'smart-reader-icon setting-icon'});
@@ -306,8 +304,6 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 						
 						// 更新CSS变量
-						document.documentElement.style.setProperty('--highlight-color', this.plugin.settings.highlightColor);
-						
 						// 如果当前有活动文档且插件已启用，重新处理文档以应用新样式
 						this.reprocessCurrentDocument();
 						
@@ -331,8 +327,6 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 						
 						// 更新CSS变量，实时预览效果
-						document.documentElement.style.setProperty('--highlight-color', value);
-						
 						// 如果当前有活动文档且插件已启用，重新处理文档以应用新颜色
 						this.reprocessCurrentDocument();
 					})
@@ -393,7 +387,6 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 			// 显示通知
 			new Notice(message, 5000);
 		} catch (error) {
-			console.error('Error testing filters:', error);
 			new Notice(t(this.app, 'smartreader.messages.test_error'));
 		}
 	}

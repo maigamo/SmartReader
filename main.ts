@@ -20,8 +20,6 @@ export class SmartReaderPlugin extends Plugin {
 	ribbonIcon: HTMLElement | null = null;
 
 	async onload() {
-		console.log('Loading SmartReader plugin');
-		
 		// 注册自定义图标
 		this.registerIcons();
 		
@@ -72,13 +70,7 @@ export class SmartReaderPlugin extends Plugin {
 					? t(this.app, 'smartreader.status.enabled', this.settings) 
 					: t(this.app, 'smartreader.status.disabled', this.settings);
 				new Notice(status);
-			},
-			hotkeys: [
-				{
-					modifiers: ['Mod', 'Shift'],
-					key: 'r',
-				}
-			]
+			}
 		});
 		
 		// 注册命令：立即处理当前文档
@@ -122,13 +114,7 @@ export class SmartReaderPlugin extends Plugin {
 				// 实际执行命令
 				this.eventHandler.processDocument(activeLeaf);
 				return true;
-			},
-			hotkeys: [
-				{
-					modifiers: ['Mod', 'Shift'],
-					key: 'p',
-				}
-			]
+			}
 		});
 		
 		// 注册命令：清除当前文档处理
@@ -172,13 +158,7 @@ export class SmartReaderPlugin extends Plugin {
 				// 实际执行命令
 				this.eventHandler.clearDocument(activeLeaf);
 				return true;
-			},
-			hotkeys: [
-				{
-					modifiers: ['Mod', 'Shift'],
-					key: 'c',
-				}
-			]
+			}
 		});
 		
 		// 注册命令：打开插件设置
@@ -189,13 +169,7 @@ export class SmartReaderPlugin extends Plugin {
 			callback: () => {
 				this.app.setting.open();
 				this.app.setting.openTabById('obsidian-smart-reader');
-			},
-			hotkeys: [
-				{
-					modifiers: ['Mod', 'Shift'],
-					key: 's',
-				}
-			]
+			}
 		});
 		
 		// 添加测试国际化命令
@@ -294,8 +268,7 @@ export class SmartReaderPlugin extends Plugin {
 	}
 
 	onunload() {
-		console.log('Unloading SmartReader plugin');
-	}
+		}
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
@@ -318,7 +291,7 @@ export class SmartReaderPlugin extends Plugin {
 		}
 		
 		// 更新CSS变量
-		document.documentElement.style.setProperty('--highlight-color', this.settings.highlightColor);
+		document.body.setAttribute('data-highlight-color', this.settings.highlightColor);
 	}
 	
 	/**
@@ -347,19 +320,8 @@ export class SmartReaderPlugin extends Plugin {
 	}
 	
 	loadStyles() {
-		// 加载CSS样式
-		const styleEl = document.createElement('style');
-		styleEl.id = 'smart-reader-styles';
-		styleEl.textContent = `
-		/* 主题变量 - 适配深色和浅色主题 */
-		:root {
-			--highlight-color: ${this.settings.highlightColor};
-		}
-		`;
-		document.head.appendChild(styleEl);
-		
-		// 设置CSS变量
-		document.documentElement.style.setProperty('--highlight-color', this.settings.highlightColor);
+		// 使用CSS属性而不是直接设置样式
+		document.body.setAttribute('data-highlight-color', this.settings.highlightColor);
 	}
 	
 	// 设置状态栏

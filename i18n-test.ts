@@ -28,7 +28,6 @@ export class I18nTestModal extends Modal {
                     .onClick(() => {
                         const currentLang = getCurrentLang(this.app);
                         new Notice(`Current language: ${currentLang}`);
-                        console.log(`SmartReader: Current language detected: ${currentLang}`);
                     })
             );
 
@@ -59,22 +58,19 @@ export class I18nTestModal extends Modal {
         testKeys.forEach(key => {
             const translation = t(this.app, key);
             const div = contentEl.createDiv();
-            div.innerHTML = `<strong>${key}:</strong> ${translation}`;
+            div.createEl('strong', { text: key + ':' }); div.createSpan({ text: ' ' + translation });
         });
 
         // 添加手动语言切换测试
         contentEl.createEl('h3', { text: 'Manual Language Test' });
         
         const languageTestDiv = contentEl.createDiv();
-        languageTestDiv.style.marginTop = '10px';
-        
-        ['auto', 'en', 'zh', 'ja'].forEach(lang => {
+        languageTestDiv.addClass('language-test-section'); ['auto', 'en', 'zh', 'ja'].forEach(lang => {
             const button = languageTestDiv.createEl('button', {
                 text: lang === 'auto' ? 'Auto' : lang.toUpperCase(),
                 cls: 'mod-cta'
             });
-            button.style.marginRight = '10px';
-            button.addEventListener('click', () => {
+            button.addClass('language-test-button'); button.addEventListener('click', () => {
                 // 模拟不同语言设置
                 const mockSettings = { language: lang as 'auto' | 'en' | 'zh' | 'ja' };
                 const testTranslation = t(this.app, 'smartreader.settings.behavior', mockSettings);

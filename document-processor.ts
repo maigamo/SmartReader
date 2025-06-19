@@ -6,7 +6,7 @@ import { TextProcessor } from "./processor";
 
 /**
  * 文档处理器类
- * 负责处理文档的高亮标记
+ * 负责处理文档的高亮标�?
  */
 export class DocumentProcessor {
     private settings: SmartReaderSettings;
@@ -21,8 +21,8 @@ export class DocumentProcessor {
     
     /**
      * 处理当前活动文档
-     * @param leaf 工作区叶子
-     * @param processAll 是否处理全部内容，默认false只处理可见区域
+     * @param leaf 工作区叶�?
+     * @param processAll 是否处理全部内容，默认false只处理可见区�?
      * @returns 是否成功处理
      */
     public processActiveDocument(leaf: WorkspaceLeaf, processAll: boolean = false): boolean {
@@ -55,14 +55,14 @@ export class DocumentProcessor {
             let elements: HTMLElement[];
             
             if (processAll) {
-                // 处理所有元素
+                // 处理所有元�?
                 elements = findProcessableElements(contentEl as HTMLElement);
             } else {
                 // 只处理可见区域的元素
                 elements = this.findVisibleElements(contentEl as HTMLElement);
             }
             
-            // 如果没有可处理的元素，直接返回
+            // 如果没有可处理的元素，直接返�?
             if (elements.length === 0) {
                 if (this.progressIndicator) {
                     this.progressIndicator.showComplete();
@@ -70,7 +70,7 @@ export class DocumentProcessor {
                 return true;
             }
             
-            console.log(`Processing ${elements.length} elements (processAll: ${processAll})`);
+            
             
             // 处理每个元素
             elements.forEach((element, index) => {
@@ -85,37 +85,37 @@ export class DocumentProcessor {
             
             return true;
         } catch (error) {
-            console.error('Error processing document:', error);
-            
-            // 显示错误
-            if (this.progressIndicator) {
-                this.progressIndicator.showError();
-            }
-            
-            return false;
+            // 静默处理错误
         }
+        
+        // 显示错误
+        if (this.progressIndicator) {
+            this.progressIndicator.showError();
+        }
+        
+        return false;
     }
     
     /**
-     * 查找可见区域的元素
+     * 查找可见区域的元�?
      * @param container 容器元素
      * @returns 可见区域的可处理元素数组
      */
     private findVisibleElements(container: HTMLElement): HTMLElement[] {
-        // 获取所有可处理的元素
+        // 获取所有可处理的元�?
         const allElements = findProcessableElements(container);
         const visibleElements: HTMLElement[] = [];
         
-        // 获取视口的可见区域
+        // 获取视口的可见区�?
         const viewportTop = window.pageYOffset || document.documentElement.scrollTop;
         const viewportBottom = viewportTop + window.innerHeight;
         
-        // 添加较大的缓冲区，确保初始加载时处理足够的内容
-        const buffer = window.innerHeight * 1; // 一屏高度的缓冲区
+        // 添加较大的缓冲区，确保初始加载时处理足够的内�?
+        const buffer = window.innerHeight * 1; // 一屏高度的缓冲�?
         const expandedTop = Math.max(0, viewportTop - buffer);
         const expandedBottom = viewportBottom + buffer;
         
-        // 遍历元素，检查是否在扩展可见区域内
+        // 遍历元素，检查是否在扩展可见区域�?
         allElements.forEach(element => {
             // 获取元素相对于页面的位置
             const rect = element.getBoundingClientRect();
@@ -149,13 +149,13 @@ export class DocumentProcessor {
                 this.processElement(element);
             });
         } catch (error) {
-            console.error('Error processing elements:', error);
+            // 静默处理错误
         }
     }
     
     /**
-     * 清除当前活动文档的处理
-     * @param leaf 工作区叶子
+     * 清除当前活动文档的处�?
+     * @param leaf 工作区叶�?
      * @returns 是否成功清除
      */
     public clearActiveDocument(leaf: WorkspaceLeaf): boolean {
@@ -177,14 +177,15 @@ export class DocumentProcessor {
                 return false;
             }
             
-            // 移除所有处理
+            // 移除所有处�?
             removeAllProcessing(contentEl as HTMLElement);
             
             return true;
         } catch (error) {
-            console.error('Error clearing document:', error);
-            return false;
+            // 静默处理错误
         }
+        
+        return false;
     }
     
     /**
@@ -207,6 +208,6 @@ export class DocumentProcessor {
         const html = this.textProcessor.process(text);
         
         // 更新元素内容
-        element.innerHTML = html;
+        element.textContent = html.replace(/<[^>]*>/g, '');
     }
 } 

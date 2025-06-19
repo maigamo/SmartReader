@@ -238,32 +238,32 @@ export function getCurrentLang(app: App, settings?: SmartReaderSettings): string
     }
     
     try {
-        // 使用官方 getLanguage() 方法 (需要 minAppVersion: "1.8.0")
-        const obsidianLang = app.getLanguage();
+        const currentLang = app.getLanguage();
         
-        // 将 Obsidian 语言代码映射到支持的语言
-        if (obsidianLang.startsWith('zh')) {
-            lang = 'zh';
-        } else if (obsidianLang.startsWith('ja')) {
-            lang = 'ja';
-        } else {
-            lang = 'en'; // 默认英语，支持所有其他语言
+        // 验证语言是否在支持列表中
+        if (SUPPORTED_LANGUAGES.includes(currentLang as 'en' | 'zh' | 'ja')) {
+            return currentLang as 'en' | 'zh' | 'ja';
         }
         
-        console.log(`SmartReader: Detected language ${obsidianLang}, using ${lang}`);
+        // 如果不在支持列表中，从前两个字符提取语言代码
+        const langCode = currentLang.substring(0, 2) as 'en' | 'zh' | 'ja';
+        if (SUPPORTED_LANGUAGES.includes(langCode)) {
+            return langCode;
+        }
     } catch (e) {
-        console.error('SmartReader: Failed to detect language using getLanguage(), falling back to default:', e);
-        // 如果官方方法失败，回退到浏览器语言检测
-        try {
-            const browserLang = navigator.language || 'en';
-            if (browserLang.startsWith('zh')) {
-                lang = 'zh';
-            } else if (browserLang.startsWith('ja')) {
-                lang = 'ja';
-            }
-        } catch (fallbackError) {
-            console.error('SmartReader: Browser language detection also failed:', fallbackError);
+        // 静默处理错误，使用浏览器语言检测
+    }
+    
+    // 第二级：浏览器语言检测
+    try {
+        const browserLang = navigator.language || navigator.languages[0];
+        const langCode = browserLang.substring(0, 2) as 'en' | 'zh' | 'ja';
+        
+        if (SUPPORTED_LANGUAGES.includes(langCode)) {
+            return langCode;
         }
+    } catch (fallbackError) {
+        // 静默处理错误，使用默认语言
     }
     
     return lang;
@@ -279,7 +279,6 @@ export function clearTranslationCache(): void {
     });
     // 重新添加内联翻译
     Object.assign(translationCache, inlineTranslations);
-    console.log('SmartReader: Translation cache cleared');
 }
 
 /**
@@ -302,10 +301,11 @@ async function loadTranslations(lang: string): Promise<Translations> {
         translationCache[lang] = translations;
         return translations;
     } catch (e) {
-        console.error(`Failed to load translations for ${lang}:`, e);
-        
-        // 如果加载失败，使用内联翻译
-        return inlineTranslations[lang] || inlineTranslations.en;
+        // 静默处理翻译加载错误，使用默认语言
+        if (lang !== 'en') {
+            return await loadTranslations('en'); // 回退到英语
+        }
+        return {}; // 如果英语也失败，返回空对象
     }
 }
 

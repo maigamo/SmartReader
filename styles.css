@@ -7,6 +7,34 @@
     --icon-hover-scale: 1.1;
 }
 
+/* 动态颜色支持 - 使用CSS属性选择器 */
+body[data-highlight-color] {
+    --highlight-color: attr(data-highlight-color);
+}
+
+/* 进度条动态宽度支持 */
+.smart-reader-progress-bar[data-progress="0"] { width: 0%; }
+.smart-reader-progress-bar[data-progress="5"] { width: 5%; }
+.smart-reader-progress-bar[data-progress="10"] { width: 10%; }
+.smart-reader-progress-bar[data-progress="15"] { width: 15%; }
+.smart-reader-progress-bar[data-progress="20"] { width: 20%; }
+.smart-reader-progress-bar[data-progress="25"] { width: 25%; }
+.smart-reader-progress-bar[data-progress="30"] { width: 30%; }
+.smart-reader-progress-bar[data-progress="35"] { width: 35%; }
+.smart-reader-progress-bar[data-progress="40"] { width: 40%; }
+.smart-reader-progress-bar[data-progress="45"] { width: 45%; }
+.smart-reader-progress-bar[data-progress="50"] { width: 50%; }
+.smart-reader-progress-bar[data-progress="55"] { width: 55%; }
+.smart-reader-progress-bar[data-progress="60"] { width: 60%; }
+.smart-reader-progress-bar[data-progress="65"] { width: 65%; }
+.smart-reader-progress-bar[data-progress="70"] { width: 70%; }
+.smart-reader-progress-bar[data-progress="75"] { width: 75%; }
+.smart-reader-progress-bar[data-progress="80"] { width: 80%; }
+.smart-reader-progress-bar[data-progress="85"] { width: 85%; }
+.smart-reader-progress-bar[data-progress="90"] { width: 90%; }
+.smart-reader-progress-bar[data-progress="95"] { width: 95%; }
+.smart-reader-progress-bar[data-progress="100"] { width: 100%; }
+
 /* 主题适配 - 深色主题 */
 .theme-dark {
     --highlight-shadow-color: rgba(255, 0, 0, 0.3);
@@ -19,6 +47,27 @@
     --highlight-shadow-color: rgba(255, 0, 0, 0.2);
     --progress-bg-color: rgba(0, 0, 0, 0.1);
     --tooltip-bg-color: rgba(50, 50, 50, 0.8);
+}
+
+/* 添加新的样式类，替代JavaScript中的直接样式设置 */
+.smart-reader-slider {
+    width: 180px !important;
+}
+
+.smart-reader-input {
+    width: 50px !important;
+}
+
+.smart-reader-progress-bar {
+    transition: width 0.3s ease;
+}
+
+.language-test-section {
+    margin-top: 10px;
+}
+
+.language-test-button {
+    margin-right: 10px;
 }
 
 /* Basic style definitions */

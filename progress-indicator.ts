@@ -77,6 +77,10 @@ export class ProgressIndicator {
             cls: 'smart-reader-progress-bar'
         });
         
+        // 更新进度条（使用CSS类而不是直接样式）
+        this.progressBarEl.classList.add('smart-reader-progress-bar');
+        this.progressBarEl.setAttribute('data-progress', this.progress.toString());
+        
         // 默认隐藏
         this.hide();
     }
@@ -130,8 +134,8 @@ export class ProgressIndicator {
         // 确保进度在有效范围内
         this.progress = Math.max(0, Math.min(100, progress));
         
-        // 更新进度条宽度
-        this.progressBarEl.style.width = `${this.progress}%`;
+        // 使用CSS属性而不是直接设置样式
+        this.progressBarEl.setAttribute('data-progress', this.progress.toString());
         
         // 如果到达100%，显示完成
         if (this.progress >= 100) {
