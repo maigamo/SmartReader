@@ -1,4 +1,4 @@
-import { App } from 'obsidian';
+import { App, getLanguage } from 'obsidian';
 
 // 支持的语言
 export const SUPPORTED_LANGUAGES = ['en', 'zh', 'ja'];
@@ -13,9 +13,9 @@ const inlineTranslations: { [lang: string]: Translations } = {
     en: {
         smartreader: {
             settings: {
-                behavior: "Behavior & Activation",
-                highlighting: "Highlighting Rules",
-                appearance: "Appearance & Style",
+                behavior: "Behavior and activation",
+                highlighting: "Highlighting rules",
+                appearance: "Appearance and style",
                 
                 auto_process: "Auto-process new documents",
                 auto_process_description: "Automatically apply highlighting when opening notes",
@@ -41,7 +41,7 @@ const inlineTranslations: { [lang: string]: Translations } = {
                 style_bold: "Bold",
                 style_color: "Color",
                 style_underline: "Underline",
-                style_bold_underline: "Bold + Underline"
+                style_bold_underline: "Bold and underline"
             },
             commands: {
                 toggle: "Toggle speed reading mode",
@@ -102,7 +102,7 @@ const inlineTranslations: { [lang: string]: Translations } = {
                 style_bold: "加粗",
                 style_color: "颜色",
                 style_underline: "下划线",
-                style_bold_underline: "加粗+下划线"
+                style_bold_underline: "加粗和下划线"
             },
             commands: {
                 toggle: "切换速读模式",
@@ -207,26 +207,22 @@ const translationCache: {
  * @returns 语言代码
  */
 export function getCurrentLang(app: App): string {
-    // 检查系统语言设置
-    let lang = 'en'; // 默认英语
-    
     try {
-        // @ts-ignore - 访问内部属性
-        lang = app.vault.config?.lang || navigator.language || 'en';
+        // 使用Obsidian的getLanguage API获取系统语言
+        const systemLang = getLanguage();
         
         // 将语言代码转换为支持的语言
-        if (lang.startsWith('zh')) {
-            lang = 'zh';
-        } else if (lang.startsWith('ja')) {
-            lang = 'ja';
+        if (systemLang.startsWith('zh')) {
+            return 'zh';
+        } else if (systemLang.startsWith('ja')) {
+            return 'ja';
         } else {
-            lang = 'en'; // 默认英语
+            return 'en'; // 默认英语
         }
     } catch (e) {
         console.error('Failed to detect language:', e);
+        return 'en'; // 出错时默认英语
     }
-    
-    return lang;
 }
 
 /**

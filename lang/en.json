@@ -1,9 +1,9 @@
 {
     "smartreader": {
         "settings": {
-            "behavior": "Behavior & Activation",
-            "highlighting": "Highlighting Rules",
-            "appearance": "Appearance & Style",
+            "behavior": "Behavior and activation",
+            "highlighting": "Highlighting rules",
+            "appearance": "Appearance and style",
             
             "auto_process": "Auto-process new documents",
             "auto_process_description": "Automatically apply highlighting when opening notes",
@@ -29,7 +29,7 @@
             "style_bold": "Bold",
             "style_color": "Color",
             "style_underline": "Underline",
-            "style_bold_underline": "Bold + Underline"
+            "style_bold_underline": "Bold and underline"
         },
         "commands": {
             "toggle": "Toggle speed reading mode",

@@ -1,5 +1,5 @@
-import { TextProcessor } from "../processor";
-import { SmartReaderSettings, DEFAULT_SETTINGS } from "../types";
+import { TextProcessor } from "./processor";
+import { SmartReaderSettings, DEFAULT_SETTINGS } from "./types";
 
 /**
  * 简单的文本处理器测试函数

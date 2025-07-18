@@ -29,7 +29,7 @@
             "style_bold": "加粗",
             "style_color": "颜色",
             "style_underline": "下划线",
-            "style_bold_underline": "加粗+下划线"
+            "style_bold_underline": "加粗和下划线"
         },
         "commands": {
             "toggle": "切换速读模式",

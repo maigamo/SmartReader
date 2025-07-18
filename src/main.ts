@@ -53,7 +53,7 @@ export class SmartReaderPlugin extends Plugin {
 		// 注册命令：开关速读功能
 		this.addCommand({
 			id: 'toggle-smart-reader',
-			name: () => t(this.app, 'smartreader.commands.toggle'),
+			name: t(this.app, 'smartreader.commands.toggle'),
 			icon: 'book-open-check',
 			callback: () => {
 				// 切换状态
@@ -84,7 +84,7 @@ export class SmartReaderPlugin extends Plugin {
 		// 注册命令：立即处理当前文档
 		this.addCommand({
 			id: 'process-current-document',
-			name: () => t(this.app, 'smartreader.commands.process_current'),
+			name: t(this.app, 'smartreader.commands.process_current'),
 			icon: 'highlighter',
 			checkCallback: (checking: boolean) => {
 				// 检查当前是否有激活的叶子节点
@@ -134,7 +134,7 @@ export class SmartReaderPlugin extends Plugin {
 		// 注册命令：清除当前文档处理
 		this.addCommand({
 			id: 'clear-current-document',
-			name: () => t(this.app, 'smartreader.commands.clear_current'),
+			name: t(this.app, 'smartreader.commands.clear_current'),
 			icon: 'eraser',
 			checkCallback: (checking: boolean) => {
 				// 检查当前是否有激活的叶子节点
@@ -184,7 +184,7 @@ export class SmartReaderPlugin extends Plugin {
 		// 注册命令：打开插件设置
 		this.addCommand({
 			id: 'open-smart-reader-settings',
-			name: () => t(this.app, 'smartreader.commands.open_settings'),
+			name: t(this.app, 'smartreader.commands.open_settings'),
 			icon: 'settings',
 			callback: () => {
 				this.app.setting.open();
@@ -364,7 +364,7 @@ export class SmartReaderPlugin extends Plugin {
 	
 	// 设置状态栏
 	setupStatusBar() {
-		this.statusBarEl = this.addStatusBarItem();
+		this.statusBarEl = this.addStatusBarItem() as HTMLElement;
 		this.statusBarEl.addClass('smart-reader-status');
 		
 		// 点击状态栏可以切换启用状态
@@ -410,7 +410,7 @@ export class SmartReaderPlugin extends Plugin {
 					: t(this.app, 'smartreader.status.disabled');
 				new Notice(status);
 			}
-		);
+		) as HTMLElement;
 		
 		// 更新图标状态
 		this.updateRibbonIcon();

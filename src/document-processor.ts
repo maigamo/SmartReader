@@ -1,7 +1,7 @@
 import { MarkdownView, WorkspaceLeaf } from "obsidian";
 import { SmartReaderSettings } from "./types";
 import { ProgressIndicator } from "./progress-indicator";
-import { findProcessableElements, removeAllProcessing, isElementProcessed, markElementAsProcessed } from "./utils";
+import { findProcessableElements, removeAllProcessing, isElementProcessed, markElementAsProcessed, safelySetInnerHTML } from "./utils";
 import { TextProcessor } from "./processor";
 
 /**
@@ -207,6 +207,6 @@ export class DocumentProcessor {
         const html = this.textProcessor.process(text);
         
         // 更新元素内容
-        element.innerHTML = html;
+        safelySetInnerHTML(element, html);
     }
 } 

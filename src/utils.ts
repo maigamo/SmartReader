@@ -1,4 +1,4 @@
-import { TFile, Vault } from "obsidian";
+import { TFile, Vault, sanitizeHTMLToDom } from "obsidian";
 import { SmartReaderSettings } from "./types";
 
 /**
@@ -93,14 +93,11 @@ export function safelySetInnerHTML(element: HTMLElement, html: string): void {
         // 首先清空元素内容
         element.empty();
         
-        // 创建临时元素并设置内容
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = sanitizeHTML(html);
+        // 使用Obsidian的sanitizeHTMLToDom函数
+        const sanitizedElement = sanitizeHTMLToDom(html);
         
-        // 将所有子节点移动到目标元素
-        while (tempDiv.firstChild) {
-            element.appendChild(tempDiv.firstChild);
-        }
+        // 将净化后的内容添加到目标元素
+        element.appendChild(sanitizedElement);
     } catch (error) {
         console.error('Failed to set innerHTML:', error);
         
@@ -109,15 +106,7 @@ export function safelySetInnerHTML(element: HTMLElement, html: string): void {
     }
 }
 
-/**
- * 简单的HTML净化
- * @param html 原始HTML
- * @returns 净化后的HTML
- */
-export function sanitizeHTML(html: string): string {
-    // 只允许安全的标签和属性
-    return html.replace(/<(?!\/?(span|mark|em|strong|b)[^>]*>)[^>]*>/gi, '');
-}
+
 
 /**
  * 检查元素是否已处理
@@ -226,6 +215,6 @@ export function removeAllProcessing(container: HTMLElement): void {
         
         // 恢复原始内容（移除所有高亮span）
         const originalText = el.textContent || '';
-        el.innerHTML = originalText;
+        el.textContent = originalText;
     });
 } 

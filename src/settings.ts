@@ -1,6 +1,7 @@
 import { App, PluginSettingTab, Setting, TextComponent, DropdownComponent, ColorComponent, setIcon, Notice, ButtonComponent } from 'obsidian';
 import { SmartReaderPlugin } from './main';
 import { t } from './i18n';
+import { safelySetInnerHTML } from './utils';
 
 export class SmartReaderSettingTab extends PluginSettingTab {
 	plugin: SmartReaderPlugin;
@@ -140,7 +141,7 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 		
 		// 添加通配符帮助文本
 		const helpText = containerEl.createDiv({cls: 'setting-item-description'});
-		helpText.innerHTML = t(this.app, 'smartreader.settings.excluded_folders_help');
+		safelySetInnerHTML(helpText, t(this.app, 'smartreader.settings.excluded_folders_help'));
 		
 		// 添加测试按钮
 		const testFiltersSetting = new Setting(containerEl)
