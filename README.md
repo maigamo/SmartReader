@@ -18,7 +18,7 @@
 
 After enabling speed reading, highlight in reading mode.
 
-![alt text](./image/smart_reader_book_en_black.gif) 
+![alt text](./image/smart_reader_book_en_black2.gif)
 
 Change the marking effect.
 
@@ -26,11 +26,9 @@ Change the marking effect.
 
 ---
 
-## 🌐 Language / 语言 / 言語
 
-**English** | [中文](#中文版本) | [日本語](#日本語版)
+# **English** | [中文](#中文版本) | [日本語](#日本語版)
 
----
 
 ## 🚀 Overview
 
