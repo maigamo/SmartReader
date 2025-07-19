@@ -14,13 +14,15 @@
 
 ---
 
-## 📸 Screenshots & Demo
+## 📖 Reading Experience
 
-### 📖 Reading Experience
+After enabling speed reading, highlight in reading mode.
 
-📚 Reading Screenshot Placeholder  
-![alt text](image/smart_reader_book.gif)
+![alt text](./image/smart_reader_book_en_black.gif) 
 
+Change the marking effect.
+
+![alt text](./image/smart_reader_book.gif)
 
 ---
 
