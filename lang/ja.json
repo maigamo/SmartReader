@@ -5,13 +5,6 @@
             "highlighting": "ハイライトルール",
             "appearance": "外観とスタイル",
             
-            "language": "界面言語",
-            "language_description": "インターフェース言語を選択",
-            "language_auto": "自動",
-            "language_en": "English",
-            "language_zh": "中文",
-            "language_ja": "日本語",
-            
             "auto_process": "新しい文書を自動処理",
             "auto_process_description": "ノートを開くときに自動的にハイライトを適用",
             "delay": "自動モード遅延",
@@ -27,7 +20,6 @@
             
             "interval_type": "間隔タイプ",
             "interval_value": "間隔値",
-            "interval_value_description": "ハイライト間の単語数または文字数。5から500の値を受け入れます。",
             "word_count": "単語数",
             "character_count": "文字数",
             

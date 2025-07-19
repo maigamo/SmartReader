@@ -73,7 +73,8 @@ export class TextProcessor {
                     // 判断是否达到高亮位置（每隔intervalValue个词高亮一次）
                     if (wordCount % this.settings.intervalValue === 0) {
                         result += this.wrapWithHighlight(char);
-                        } else {
+                        console.log(`中文高亮词: '${char}' at 位置 ${wordCount}`);
+                    } else {
                         result += char;
                     }
                 }
@@ -145,7 +146,8 @@ export class TextProcessor {
                 // 判断是否达到高亮位置（每隔intervalValue个词高亮一次）
                 if (wordCount % this.settings.intervalValue === 0) {
                     result += this.wrapWithHighlight(token);
-                    } else {
+                    console.log(`英文高亮词: '${token}' at 位置 ${wordCount}`);
+                } else {
                     result += token;
                 }
             }
@@ -160,6 +162,8 @@ export class TextProcessor {
      * @returns 处理后的HTML
      */
     private processTextByCharacters(text: string): string {
+        console.log(`处理文本，字符间隔值: ${this.settings.intervalValue}`);
+        
         // 创建一个结果数组
         const result: string[] = [];
         let effectiveCharCount = 0; // 有效字符计数（不包括空白和标点）
@@ -184,13 +188,16 @@ export class TextProcessor {
             if (effectiveCharCount % this.settings.intervalValue === 0) {
                 // 添加高亮字符
                 result.push(this.wrapWithHighlight(char));
-                } else {
+                console.log(`高亮字符: '${char}' at 位置 ${effectiveCharCount}`);
+            } else {
                 // 普通字符
                 result.push(char);
             }
         }
         
         // 输出调试信息
+        console.log(`总字符数: ${chars.length}, 有效字符数: ${effectiveCharCount}`);
+        
         // 将结果数组连接为字符串
         return result.join('');
     }

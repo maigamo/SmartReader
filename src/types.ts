@@ -5,9 +5,6 @@ export interface SmartReaderSettings {
     // 功能启用状态
     isEnabled: boolean;
     
-    // 语言设置
-    language: 'auto' | 'en' | 'zh' | 'ja';
-    
     // 自动处理设置
     autoProcess: boolean;
     autoProcessDelay: number;
@@ -30,8 +27,6 @@ export interface SmartReaderSettings {
  */
 export const DEFAULT_SETTINGS: SmartReaderSettings = {
     isEnabled: true,
-    
-    language: 'auto',
     
     autoProcess: true,
     autoProcessDelay: 2,

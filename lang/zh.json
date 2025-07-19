@@ -5,13 +5,6 @@
             "highlighting": "高亮规则",
             "appearance": "外观样式",
             
-            "language": "界面语言",
-            "language_description": "选择界面语言",
-            "language_auto": "自动",
-            "language_en": "English",
-            "language_zh": "中文",
-            "language_ja": "日本語",
-            
             "auto_process": "自动处理新文档",
             "auto_process_description": "打开笔记时自动应用高亮",
             "delay": "自动模式延迟",
@@ -36,7 +29,7 @@
             "style_bold": "加粗",
             "style_color": "颜色",
             "style_underline": "下划线",
-            "style_bold_underline": "加粗+下划线"
+            "style_bold_underline": "加粗和下划线"
         },
         "commands": {
             "toggle": "切换速读模式",

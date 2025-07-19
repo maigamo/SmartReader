@@ -19,6 +19,8 @@ export class StyleManager {
      * @param newStyle 新样式
      */
     public async onStyleChanged(oldStyle: string, newStyle: string): Promise<void> {
+        console.log(`Style changed from ${oldStyle} to ${newStyle}`);
+        
         // 更新CSS变量
         this.updateCSSVariables();
         
@@ -31,8 +33,10 @@ export class StyleManager {
      * @param newColor 新颜色
      */
     public async onColorChanged(newColor: string): Promise<void> {
-        // 使用CSS属性而不是直接设置样式
-        document.body.setAttribute('data-highlight-color', newColor);
+        console.log(`Color changed to ${newColor}`);
+        
+        // 更新CSS变量
+        document.documentElement.style.setProperty('--highlight-color', newColor);
         
         // 如果当前样式使用颜色，重新处理文档
         if (this.isColorBasedStyle(this.plugin.settings.highlightStyle)) {
@@ -94,8 +98,7 @@ export class StyleManager {
      * 更新CSS变量
      */
     private updateCSSVariables(): void {
-        // 使用CSS属性而不是直接设置样式
-        document.body.setAttribute('data-highlight-color', this.plugin.settings.highlightColor);
+        document.documentElement.style.setProperty('--highlight-color', this.plugin.settings.highlightColor);
     }
     
     /**
@@ -158,29 +161,5 @@ export class StyleManager {
         
         // 规范化文本节点
         container.normalize();
-    }
-
-    /**
-     * 更新高亮颜色
-     * @param newColor 新的颜色值
-     */
-    updateHighlightColor(newColor: string): void {
-        // 更新设置
-        this.plugin.settings.highlightColor = newColor;
-        
-        // 使用CSS类而不是直接设置样式
-        document.body.setAttribute('data-highlight-color', newColor);
-        
-        // 应用新样式到所有已处理的元素
-        this.applyHighlightStyle();
-    }
-
-    /**
-     * 初始化样式管理器
-     */
-    initialize(): void {
-        this.loadStyles();
-        // 设置初始颜色属性
-        document.body.setAttribute('data-highlight-color', this.plugin.settings.highlightColor);
     }
 } 

@@ -20,6 +20,8 @@ export class SmartReaderPlugin extends Plugin {
 	ribbonIcon: HTMLElement | null = null;
 
 	async onload() {
+		console.log('Loading SmartReader plugin');
+		
 		// 注册自定义图标
 		this.registerIcons();
 		
@@ -51,7 +53,7 @@ export class SmartReaderPlugin extends Plugin {
 		// 注册命令：开关速读功能
 		this.addCommand({
 			id: 'toggle-smart-reader',
-			name: () => t(this.app, 'smartreader.commands.toggle', this.settings),
+			name: t(this.app, 'smartreader.commands.toggle'),
 			icon: 'book-open-check',
 			callback: () => {
 				// 切换状态
@@ -67,23 +69,29 @@ export class SmartReaderPlugin extends Plugin {
 				
 				// 状态反馈
 				const status = this.settings.isEnabled 
-					? t(this.app, 'smartreader.status.enabled', this.settings) 
-					: t(this.app, 'smartreader.status.disabled', this.settings);
+					? t(this.app, 'smartreader.status.enabled') 
+					: t(this.app, 'smartreader.status.disabled');
 				new Notice(status);
-			}
+			},
+			hotkeys: [
+				{
+					modifiers: ['Mod', 'Shift'],
+					key: 'r',
+				}
+			]
 		});
 		
 		// 注册命令：立即处理当前文档
 		this.addCommand({
 			id: 'process-current-document',
-			name: () => t(this.app, 'smartreader.commands.process_current', this.settings),
+			name: t(this.app, 'smartreader.commands.process_current'),
 			icon: 'highlighter',
 			checkCallback: (checking: boolean) => {
 				// 检查当前是否有激活的叶子节点
 				const activeLeaf = this.app.workspace.activeLeaf;
 				if (!activeLeaf) {
 					if (!checking) {
-						new Notice(t(this.app, 'smartreader.messages.no_active_file', this.settings));
+						new Notice(t(this.app, 'smartreader.messages.no_active_file'));
 					}
 					return false;
 				}
@@ -92,7 +100,7 @@ export class SmartReaderPlugin extends Plugin {
 				const view = activeLeaf.view;
 				if (!(view instanceof MarkdownView)) {
 					if (!checking) {
-						new Notice(t(this.app, 'smartreader.messages.not_markdown_view', this.settings));
+						new Notice(t(this.app, 'smartreader.messages.not_markdown_view'));
 					}
 					return false;
 				}
@@ -101,7 +109,7 @@ export class SmartReaderPlugin extends Plugin {
 				const isPreviewMode = view.getMode() === 'preview';
 				if (!isPreviewMode) {
 					if (!checking) {
-						new Notice(t(this.app, 'smartreader.messages.not_preview_mode', this.settings));
+						new Notice(t(this.app, 'smartreader.messages.not_preview_mode'));
 					}
 					return false;
 				}
@@ -114,20 +122,26 @@ export class SmartReaderPlugin extends Plugin {
 				// 实际执行命令
 				this.eventHandler.processDocument(activeLeaf);
 				return true;
-			}
+			},
+			hotkeys: [
+				{
+					modifiers: ['Mod', 'Shift'],
+					key: 'p',
+				}
+			]
 		});
 		
 		// 注册命令：清除当前文档处理
 		this.addCommand({
 			id: 'clear-current-document',
-			name: () => t(this.app, 'smartreader.commands.clear_current', this.settings),
+			name: t(this.app, 'smartreader.commands.clear_current'),
 			icon: 'eraser',
 			checkCallback: (checking: boolean) => {
 				// 检查当前是否有激活的叶子节点
 				const activeLeaf = this.app.workspace.activeLeaf;
 				if (!activeLeaf) {
 					if (!checking) {
-						new Notice(t(this.app, 'smartreader.messages.no_active_file', this.settings));
+						new Notice(t(this.app, 'smartreader.messages.no_active_file'));
 					}
 					return false;
 				}
@@ -136,7 +150,7 @@ export class SmartReaderPlugin extends Plugin {
 				const view = activeLeaf.view;
 				if (!(view instanceof MarkdownView)) {
 					if (!checking) {
-						new Notice(t(this.app, 'smartreader.messages.not_markdown_view', this.settings));
+						new Notice(t(this.app, 'smartreader.messages.not_markdown_view'));
 					}
 					return false;
 				}
@@ -145,7 +159,7 @@ export class SmartReaderPlugin extends Plugin {
 				const isPreviewMode = view.getMode() === 'preview';
 				if (!isPreviewMode) {
 					if (!checking) {
-						new Notice(t(this.app, 'smartreader.messages.not_preview_mode', this.settings));
+						new Notice(t(this.app, 'smartreader.messages.not_preview_mode'));
 					}
 					return false;
 				}
@@ -158,18 +172,30 @@ export class SmartReaderPlugin extends Plugin {
 				// 实际执行命令
 				this.eventHandler.clearDocument(activeLeaf);
 				return true;
-			}
+			},
+			hotkeys: [
+				{
+					modifiers: ['Mod', 'Shift'],
+					key: 'c',
+				}
+			]
 		});
 		
 		// 注册命令：打开插件设置
 		this.addCommand({
 			id: 'open-smart-reader-settings',
-			name: () => t(this.app, 'smartreader.commands.open_settings', this.settings),
+			name: t(this.app, 'smartreader.commands.open_settings'),
 			icon: 'settings',
 			callback: () => {
 				this.app.setting.open();
 				this.app.setting.openTabById('obsidian-smart-reader');
-			}
+			},
+			hotkeys: [
+				{
+					modifiers: ['Mod', 'Shift'],
+					key: 's',
+				}
+			]
 		});
 		
 		// 添加测试国际化命令
@@ -268,7 +294,8 @@ export class SmartReaderPlugin extends Plugin {
 	}
 
 	onunload() {
-		}
+		console.log('Unloading SmartReader plugin');
+	}
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
@@ -291,7 +318,7 @@ export class SmartReaderPlugin extends Plugin {
 		}
 		
 		// 更新CSS变量
-		document.body.setAttribute('data-highlight-color', this.settings.highlightColor);
+		document.documentElement.style.setProperty('--highlight-color', this.settings.highlightColor);
 	}
 	
 	/**
@@ -320,13 +347,24 @@ export class SmartReaderPlugin extends Plugin {
 	}
 	
 	loadStyles() {
-		// 使用CSS属性而不是直接设置样式
-		document.body.setAttribute('data-highlight-color', this.settings.highlightColor);
+		// 加载CSS样式
+		const styleEl = document.createElement('style');
+		styleEl.id = 'smart-reader-styles';
+		styleEl.textContent = `
+		/* 主题变量 - 适配深色和浅色主题 */
+		:root {
+			--highlight-color: ${this.settings.highlightColor};
+		}
+		`;
+		document.head.appendChild(styleEl);
+		
+		// 设置CSS变量
+		document.documentElement.style.setProperty('--highlight-color', this.settings.highlightColor);
 	}
 	
 	// 设置状态栏
 	setupStatusBar() {
-		this.statusBarEl = this.addStatusBarItem();
+		this.statusBarEl = this.addStatusBarItem() as HTMLElement;
 		this.statusBarEl.addClass('smart-reader-status');
 		
 		// 点击状态栏可以切换启用状态
@@ -341,8 +379,8 @@ export class SmartReaderPlugin extends Plugin {
 			
 			// 状态反馈
 			const status = this.settings.isEnabled 
-				? t(this.app, 'smartreader.status.enabled', this.settings) 
-				: t(this.app, 'smartreader.status.disabled', this.settings);
+				? t(this.app, 'smartreader.status.enabled') 
+				: t(this.app, 'smartreader.status.disabled');
 			new Notice(status);
 		});
 		
@@ -355,7 +393,7 @@ export class SmartReaderPlugin extends Plugin {
 		// 添加功能区图标
 		this.ribbonIcon = this.addRibbonIcon(
 			'smart-reader', 
-			t(this.app, 'smartreader.commands.toggle', this.settings), 
+			t(this.app, 'smartreader.commands.toggle'), 
 			(evt) => {
 				// 切换状态
 				this.settings.isEnabled = !this.settings.isEnabled;
@@ -368,11 +406,11 @@ export class SmartReaderPlugin extends Plugin {
 				
 				// 状态反馈
 				const status = this.settings.isEnabled 
-					? t(this.app, 'smartreader.status.enabled', this.settings) 
-					: t(this.app, 'smartreader.status.disabled', this.settings);
+					? t(this.app, 'smartreader.status.enabled') 
+					: t(this.app, 'smartreader.status.disabled');
 				new Notice(status);
 			}
-		);
+		) as HTMLElement;
 		
 		// 更新图标状态
 		this.updateRibbonIcon();
@@ -399,12 +437,12 @@ export class SmartReaderPlugin extends Plugin {
 		
 		if (this.settings.isEnabled) {
 			setIcon(iconEl, 'book-open-check');
-			statusText.setText(t(this.app, 'smartreader.status.enabled', this.settings));
+			statusText.setText(t(this.app, 'smartreader.status.enabled'));
 			this.statusBarEl.removeClass('disabled');
 			this.statusBarEl.addClass('enabled');
 		} else {
 			setIcon(iconEl, 'book-open');
-			statusText.setText(t(this.app, 'smartreader.status.disabled', this.settings));
+			statusText.setText(t(this.app, 'smartreader.status.disabled'));
 			this.statusBarEl.removeClass('enabled');
 			this.statusBarEl.addClass('disabled');
 		}

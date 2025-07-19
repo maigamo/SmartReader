@@ -1,12 +1,12 @@
 import { MarkdownView, WorkspaceLeaf } from "obsidian";
 import { SmartReaderSettings } from "./types";
 import { ProgressIndicator } from "./progress-indicator";
-import { findProcessableElements, removeAllProcessing, isElementProcessed, markElementAsProcessed } from "./utils";
+import { findProcessableElements, removeAllProcessing, isElementProcessed, markElementAsProcessed, safelySetInnerHTML } from "./utils";
 import { TextProcessor } from "./processor";
 
 /**
  * 文档处理器类
- * 负责处理文档的高亮标�?
+ * 负责处理文档的高亮标记
  */
 export class DocumentProcessor {
     private settings: SmartReaderSettings;
@@ -21,8 +21,8 @@ export class DocumentProcessor {
     
     /**
      * 处理当前活动文档
-     * @param leaf 工作区叶�?
-     * @param processAll 是否处理全部内容，默认false只处理可见区�?
+     * @param leaf 工作区叶子
+     * @param processAll 是否处理全部内容，默认false只处理可见区域
      * @returns 是否成功处理
      */
     public processActiveDocument(leaf: WorkspaceLeaf, processAll: boolean = false): boolean {
@@ -55,14 +55,14 @@ export class DocumentProcessor {
             let elements: HTMLElement[];
             
             if (processAll) {
-                // 处理所有元�?
+                // 处理所有元素
                 elements = findProcessableElements(contentEl as HTMLElement);
             } else {
                 // 只处理可见区域的元素
                 elements = this.findVisibleElements(contentEl as HTMLElement);
             }
             
-            // 如果没有可处理的元素，直接返�?
+            // 如果没有可处理的元素，直接返回
             if (elements.length === 0) {
                 if (this.progressIndicator) {
                     this.progressIndicator.showComplete();
@@ -70,7 +70,7 @@ export class DocumentProcessor {
                 return true;
             }
             
-            
+            console.log(`Processing ${elements.length} elements (processAll: ${processAll})`);
             
             // 处理每个元素
             elements.forEach((element, index) => {
@@ -85,37 +85,37 @@ export class DocumentProcessor {
             
             return true;
         } catch (error) {
-            // 静默处理错误
+            console.error('Error processing document:', error);
+            
+            // 显示错误
+            if (this.progressIndicator) {
+                this.progressIndicator.showError();
+            }
+            
+            return false;
         }
-        
-        // 显示错误
-        if (this.progressIndicator) {
-            this.progressIndicator.showError();
-        }
-        
-        return false;
     }
     
     /**
-     * 查找可见区域的元�?
+     * 查找可见区域的元素
      * @param container 容器元素
      * @returns 可见区域的可处理元素数组
      */
     private findVisibleElements(container: HTMLElement): HTMLElement[] {
-        // 获取所有可处理的元�?
+        // 获取所有可处理的元素
         const allElements = findProcessableElements(container);
         const visibleElements: HTMLElement[] = [];
         
-        // 获取视口的可见区�?
+        // 获取视口的可见区域
         const viewportTop = window.pageYOffset || document.documentElement.scrollTop;
         const viewportBottom = viewportTop + window.innerHeight;
         
-        // 添加较大的缓冲区，确保初始加载时处理足够的内�?
-        const buffer = window.innerHeight * 1; // 一屏高度的缓冲�?
+        // 添加较大的缓冲区，确保初始加载时处理足够的内容
+        const buffer = window.innerHeight * 1; // 一屏高度的缓冲区
         const expandedTop = Math.max(0, viewportTop - buffer);
         const expandedBottom = viewportBottom + buffer;
         
-        // 遍历元素，检查是否在扩展可见区域�?
+        // 遍历元素，检查是否在扩展可见区域内
         allElements.forEach(element => {
             // 获取元素相对于页面的位置
             const rect = element.getBoundingClientRect();
@@ -149,13 +149,13 @@ export class DocumentProcessor {
                 this.processElement(element);
             });
         } catch (error) {
-            // 静默处理错误
+            console.error('Error processing elements:', error);
         }
     }
     
     /**
-     * 清除当前活动文档的处�?
-     * @param leaf 工作区叶�?
+     * 清除当前活动文档的处理
+     * @param leaf 工作区叶子
      * @returns 是否成功清除
      */
     public clearActiveDocument(leaf: WorkspaceLeaf): boolean {
@@ -177,15 +177,14 @@ export class DocumentProcessor {
                 return false;
             }
             
-            // 移除所有处�?
+            // 移除所有处理
             removeAllProcessing(contentEl as HTMLElement);
             
             return true;
         } catch (error) {
-            // 静默处理错误
+            console.error('Error clearing document:', error);
+            return false;
         }
-        
-        return false;
     }
     
     /**
@@ -208,6 +207,6 @@ export class DocumentProcessor {
         const html = this.textProcessor.process(text);
         
         // 更新元素内容
-        element.textContent = html.replace(/<[^>]*>/g, '');
+        safelySetInnerHTML(element, html);
     }
 } 

@@ -151,7 +151,8 @@ export class EventHandler {
         // 添加新的滚动监听器（使用保存的函数引用）
         previewContainer.addEventListener('scroll', this.boundScrollHandler, { passive: true });
         
-        }
+        console.log('Bound scroll listener to preview container');
+    }
     
     /**
      * 处理滚动事件
@@ -209,10 +210,11 @@ export class EventHandler {
             
             // 如果有可见的未处理元素，处理它们
             if (visibleElements.length > 0) {
+                console.log(`Processing ${visibleElements.length} visible elements during scroll`);
                 this.documentProcessor.processElements(visibleElements);
             }
         } catch (error) {
-            // 静默处理错误
+            console.error('Error processing visible content:', error);
         } finally {
             // 重置处理标记
             this.isProcessingScroll = false;
@@ -363,6 +365,7 @@ export class EventHandler {
         
         // 检查文件是否在排除列表中
         if (isFileExcluded(file, this.plugin.settings)) {
+            console.log('File excluded:', file.path);
             return;
         }
         
@@ -370,10 +373,12 @@ export class EventHandler {
         try {
             const content = await getFileContent(file, this.plugin.app.vault);
             if (!meetMinimumLength(content, this.plugin.settings)) {
+                console.log('File too short:', file.path);
                 return;
             }
         } catch (error) {
-            // 静默处理错误
+            console.error('Error reading file:', error);
+            return;
         }
         
         // 判断是否需要自动处理
@@ -426,7 +431,9 @@ export class EventHandler {
         const success = this.documentProcessor.processActiveDocument(leaf);
         
         if (success) {
-            } else {
+            console.log('Document processed successfully:', file.path);
+        } else {
+            console.log('Failed to process document:', file.path);
             new Notice(t(this.plugin.app, 'smartreader.messages.processing_error'));
         }
         
@@ -459,7 +466,9 @@ export class EventHandler {
         const success = this.documentProcessor.clearActiveDocument(leaf);
         
         if (success) {
-            } else {
+            console.log('Document processing cleared:', file.path);
+        } else {
+            console.log('Failed to clear document processing:', file.path);
             new Notice(t(this.plugin.app, 'smartreader.messages.clearing_error'));
         }
         
@@ -514,6 +523,8 @@ export class EventHandler {
             return;
         }
         
+        console.log('Clearing entire document highlights:', file.path);
+        
         // 查找所有高亮元素（无论是否在可见区域）
         const allHighlights = previewContainer.querySelectorAll('.smart-reader-highlight, .smart-reader-highlight-color, .smart-reader-highlight-underline, .smart-reader-highlight-bold-underline');
         
@@ -538,5 +549,6 @@ export class EventHandler {
         // 规范化文本节点
         (previewContainer as HTMLElement).normalize();
         
-        }
+        console.log(`Cleared ${allHighlights.length} highlights and ${processedElements.length} processed markers`);
+    }
 } 

@@ -1,5 +1,4 @@
-import { App } from 'obsidian';
-import { SmartReaderSettings } from './types';
+import { App, getLanguage } from 'obsidian';
 
 // 支持的语言
 export const SUPPORTED_LANGUAGES = ['en', 'zh', 'ja'];
@@ -14,16 +13,9 @@ const inlineTranslations: { [lang: string]: Translations } = {
     en: {
         smartreader: {
             settings: {
-                behavior: "Behavior & Activation",
-                highlighting: "Highlighting Rules",
-                appearance: "Appearance & Style",
-                
-                language: "Language",
-                language_description: "Select interface language",
-                language_auto: "Auto",
-                language_en: "English",
-                language_zh: "中文",
-                language_ja: "日本語",
+                behavior: "Behavior and activation",
+                highlighting: "Highlighting rules",
+                appearance: "Appearance and style",
                 
                 auto_process: "Auto-process new documents",
                 auto_process_description: "Automatically apply highlighting when opening notes",
@@ -49,7 +41,7 @@ const inlineTranslations: { [lang: string]: Translations } = {
                 style_bold: "Bold",
                 style_color: "Color",
                 style_underline: "Underline",
-                style_bold_underline: "Bold + Underline"
+                style_bold_underline: "Bold and underline"
             },
             commands: {
                 toggle: "Toggle speed reading mode",
@@ -86,13 +78,6 @@ const inlineTranslations: { [lang: string]: Translations } = {
                 highlighting: "高亮规则",
                 appearance: "外观样式",
                 
-                language: "界面语言",
-                language_description: "选择界面语言",
-                language_auto: "自动",
-                language_en: "English",
-                language_zh: "中文",
-                language_ja: "日本語",
-                
                 auto_process: "自动处理新文档",
                 auto_process_description: "打开笔记时自动应用高亮",
                 delay: "自动模式延迟",
@@ -117,7 +102,7 @@ const inlineTranslations: { [lang: string]: Translations } = {
                 style_bold: "加粗",
                 style_color: "颜色",
                 style_underline: "下划线",
-                style_bold_underline: "加粗+下划线"
+                style_bold_underline: "加粗和下划线"
             },
             commands: {
                 toggle: "切换速读模式",
@@ -153,13 +138,6 @@ const inlineTranslations: { [lang: string]: Translations } = {
                 behavior: "動作と起動",
                 highlighting: "ハイライトルール",
                 appearance: "外観",
-                
-                language: "界面言語",
-                language_description: "インターフェース言語を選択",
-                language_auto: "自動",
-                language_en: "English",
-                language_zh: "中文",
-                language_ja: "日本語",
                 
                 auto_process: "自動処理",
                 auto_process_description: "ノートを開く時に自動的にハイライトを適用する",
@@ -226,59 +204,25 @@ const translationCache: {
 /**
  * 获取当前语言
  * @param app Obsidian App实例
- * @param settings 插件设置（可选，用于手动语言设置）
  * @returns 语言代码
  */
-export function getCurrentLang(app: App, settings?: SmartReaderSettings): string {
-    let lang = 'en'; // 默认英语
-    
-    // 如果设置了手动语言且不是自动模式，优先使用手动设置
-    if (settings && settings.language !== 'auto') {
-        return settings.language;
-    }
-    
+export function getCurrentLang(app: App): string {
     try {
-        const currentLang = app.getLanguage();
+        // 使用Obsidian的getLanguage API获取系统语言
+        const systemLang = getLanguage();
         
-        // 验证语言是否在支持列表中
-        if (SUPPORTED_LANGUAGES.includes(currentLang as 'en' | 'zh' | 'ja')) {
-            return currentLang as 'en' | 'zh' | 'ja';
-        }
-        
-        // 如果不在支持列表中，从前两个字符提取语言代码
-        const langCode = currentLang.substring(0, 2) as 'en' | 'zh' | 'ja';
-        if (SUPPORTED_LANGUAGES.includes(langCode)) {
-            return langCode;
+        // 将语言代码转换为支持的语言
+        if (systemLang.startsWith('zh')) {
+            return 'zh';
+        } else if (systemLang.startsWith('ja')) {
+            return 'ja';
+        } else {
+            return 'en'; // 默认英语
         }
     } catch (e) {
-        // 静默处理错误，使用浏览器语言检测
+        console.error('Failed to detect language:', e);
+        return 'en'; // 出错时默认英语
     }
-    
-    // 第二级：浏览器语言检测
-    try {
-        const browserLang = navigator.language || navigator.languages[0];
-        const langCode = browserLang.substring(0, 2) as 'en' | 'zh' | 'ja';
-        
-        if (SUPPORTED_LANGUAGES.includes(langCode)) {
-            return langCode;
-        }
-    } catch (fallbackError) {
-        // 静默处理错误，使用默认语言
-    }
-    
-    return lang;
-}
-
-/**
- * 清除翻译缓存
- */
-export function clearTranslationCache(): void {
-    // 清除所有缓存，只保留内联翻译
-    Object.keys(translationCache).forEach(key => {
-        delete translationCache[key];
-    });
-    // 重新添加内联翻译
-    Object.assign(translationCache, inlineTranslations);
 }
 
 /**
@@ -301,11 +245,10 @@ async function loadTranslations(lang: string): Promise<Translations> {
         translationCache[lang] = translations;
         return translations;
     } catch (e) {
-        // 静默处理翻译加载错误，使用默认语言
-        if (lang !== 'en') {
-            return await loadTranslations('en'); // 回退到英语
-        }
-        return {}; // 如果英语也失败，返回空对象
+        console.error(`Failed to load translations for ${lang}:`, e);
+        
+        // 如果加载失败，使用内联翻译
+        return inlineTranslations[lang] || inlineTranslations.en;
     }
 }
 
@@ -339,12 +282,11 @@ function getTranslation(translations: Translations, key: string): string {
  * 翻译函数
  * @param app Obsidian App实例
  * @param key 翻译键
- * @param settings 插件设置（可选，用于手动语言设置）
  * @param args 替换参数
  * @returns 翻译后的文本
  */
-export function t(app: App, key: string, settings?: SmartReaderSettings, ...args: any[]): string {
-    const lang = getCurrentLang(app, settings);
+export function t(app: App, key: string, ...args: any[]): string {
+    const lang = getCurrentLang(app);
     
     // 获取翻译
     const translations = translationCache[lang] || inlineTranslations.en;
