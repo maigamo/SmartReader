@@ -18,7 +18,9 @@
 
 After enabling speed reading, highlight in reading mode.
 
-![alt text](./image/smart_reader_book_en_black2.gif)
+![alt text](./image/smart_reader_book_en_black3.gif)
+
+---
 
 Change the marking effect.
 
