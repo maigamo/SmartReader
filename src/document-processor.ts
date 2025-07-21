@@ -3,6 +3,7 @@ import { SmartReaderSettings } from "./types";
 import { ProgressIndicator } from "./progress-indicator";
 import { findProcessableElements, removeAllProcessing, isElementProcessed, markElementAsProcessed, safelySetInnerHTML } from "./utils";
 import { TextProcessor } from "./processor";
+import { logger } from './logger';
 
 /**
  * 文档处理器类
@@ -70,7 +71,7 @@ export class DocumentProcessor {
                 return true;
             }
             
-            console.log(`Processing ${elements.length} elements (processAll: ${processAll})`);
+            logger.debug(`处理 ${elements.length} 个元素 (processAll: ${processAll})`);
             
             // 处理每个元素
             elements.forEach((element, index) => {

@@ -2,13 +2,16 @@ import { App, PluginSettingTab, Setting, TextComponent, DropdownComponent, Color
 import { SmartReaderPlugin } from './main';
 import { t } from './i18n';
 import { safelySetInnerHTML } from './utils';
+import { ThemeManager } from './theme-manager';
 
 export class SmartReaderSettingTab extends PluginSettingTab {
 	plugin: SmartReaderPlugin;
+	themeManager: ThemeManager;
 
 	constructor(app: App, plugin: SmartReaderPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
+		this.themeManager = new ThemeManager();
 	}
 
 	display(): void {
@@ -236,12 +239,12 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 		// 调整滑块和输入框的宽度
 		const sliderEl = intervalValueSetting.controlEl.querySelector('.slider') as HTMLElement;
 		if (sliderEl) {
-			sliderEl.style.width = '180px';
+										this.themeManager.styleSettingsElement(sliderEl, 'slider');
 		}
 		
 		const inputEl = intervalValueSetting.controlEl.querySelector('input[type="text"]') as HTMLElement;
 		if (inputEl) {
-			inputEl.style.width = '50px';
+			this.themeManager.styleSettingsElement(inputEl, 'input');
 		}
 		
 		// 添加图标
@@ -276,7 +279,7 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 						
 						// 更新CSS变量
-						document.documentElement.style.setProperty('--highlight-color', this.plugin.settings.highlightColor);
+						this.themeManager.setHighlightColor(this.plugin.settings.highlightColor);
 						
 						// 如果当前有活动文档且插件已启用，重新处理文档以应用新样式
 						this.reprocessCurrentDocument();
@@ -301,7 +304,7 @@ export class SmartReaderSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 						
 						// 更新CSS变量，实时预览效果
-						document.documentElement.style.setProperty('--highlight-color', value);
+						this.themeManager.setHighlightColor(value);
 						
 						// 如果当前有活动文档且插件已启用，重新处理文档以应用新颜色
 						this.reprocessCurrentDocument();

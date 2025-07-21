@@ -293,6 +293,56 @@ Currently: English, Chinese (Simplified & Traditional), and Japanese. More langu
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
+### 🛠️ Development & Building
+
+#### 📋 Prerequisites
+- Node.js 16+ 
+- npm or yarn
+- Git
+
+#### 🚀 Setup Development Environment
+```bash
+# Clone the repository
+git clone https://github.com/smartreader/obsidian-smart-reader.git
+cd obsidian-smart-reader
+
+# Install dependencies
+npm install
+
+# Start development mode (watch for changes)
+npm run dev
+
+# Type checking
+npm run check
+```
+
+#### 🏗️ Building for Production
+```bash
+# Build for release (outputs to build/ directory)
+npm run build
+
+# Build with type checking
+npm run build:release
+
+# Clean build artifacts
+npm run clean
+```
+
+#### 📁 Project Structure
+```
+SmartReader/
+├── src/              # Source code
+├── build/            # Production build output (git ignored)
+├── styles.css        # Plugin styles
+├── manifest.json     # Plugin manifest
+└── main.js           # Development build (git ignored)
+```
+
+#### 🔄 Build Process
+- **Development**: `npm run dev` creates `main.js` in root for Obsidian to load
+- **Production**: `npm run build` creates optimized files in `build/` directory
+- **Git**: Only source files are tracked; build outputs are ignored
+
 ### 🐛 Bug Reports
 
 Found a bug? Please [open an issue](https://github.com/smartreader/obsidian-smart-reader/issues) with:

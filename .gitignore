@@ -1,16 +1,31 @@
-# 忽略编译生成的文件
-*.js
-*.js.map
+# 忽略构建输出目录
+build/
+
+# 忽略开发时生成的文件（根目录的构建副本）
+main.js
+main.js.map
 
 # 忽略文档目录
 docs/
 
-# 忽略构建目录
-build/
-
-# 常见的忽略项
+# 忽略Node.js相关
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 忽略编辑器配置
 .DS_Store
 .idea/
 .vscode/
+*.swp
+*.swo
+
+# 忽略系统文件
+Thumbs.db
+Desktop.ini
+
+# 忽略临时文件
+*.tmp
+*.temp
 *.log 

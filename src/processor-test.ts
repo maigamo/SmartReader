@@ -85,22 +85,20 @@ function testProcessorWithSettings(testName: string, text: string, settings: Sma
         const processor = new TextProcessor(settings);
         const result = processor.process(text);
         
-        console.log("Input:", text);
-        console.log("Output:", result);
-        console.log("Contains highlights:", result.includes("smart-reader-highlight"));
+        // 测试日志已移除
         
         // 简单验证
         if (settings.isEnabled && text.length >= settings.minProcessLength) {
             if (!result.includes("smart-reader-highlight")) {
                 console.error("Test failed: Expected highlights but none found");
             } else {
-                console.log("Test passed");
+                // 测试通过
             }
         } else {
             if (result !== text) {
                 console.error("Test failed: Text was modified when it shouldn't be");
             } else {
-                console.log("Test passed");
+                // 测试通过
             }
         }
     } catch (error) {

@@ -9,6 +9,8 @@ import { TokenizerTestModal } from './tokenizer-test';
 import { ProgressIndicator } from './progress-indicator';
 import { StyleManager } from './style-manager';
 import { SMART_READER_ICON, SMART_READER_SETTINGS_ICON } from './icons';
+import { logger } from './logger';
+import { ThemeManager } from './theme-manager';
 
 export class SmartReaderPlugin extends Plugin {
 	settings: SmartReaderSettings;
@@ -20,7 +22,7 @@ export class SmartReaderPlugin extends Plugin {
 	ribbonIcon: HTMLElement | null = null;
 
 	async onload() {
-		console.log('Loading SmartReader plugin');
+		logger.info('加载 SmartReader 插件');
 		
 		// 注册自定义图标
 		this.registerIcons();
@@ -72,13 +74,7 @@ export class SmartReaderPlugin extends Plugin {
 					? t(this.app, 'smartreader.status.enabled') 
 					: t(this.app, 'smartreader.status.disabled');
 				new Notice(status);
-			},
-			hotkeys: [
-				{
-					modifiers: ['Mod', 'Shift'],
-					key: 'r',
-				}
-			]
+			}
 		});
 		
 		// 注册命令：立即处理当前文档
@@ -122,13 +118,7 @@ export class SmartReaderPlugin extends Plugin {
 				// 实际执行命令
 				this.eventHandler.processDocument(activeLeaf);
 				return true;
-			},
-			hotkeys: [
-				{
-					modifiers: ['Mod', 'Shift'],
-					key: 'p',
-				}
-			]
+			}
 		});
 		
 		// 注册命令：清除当前文档处理
@@ -172,13 +162,7 @@ export class SmartReaderPlugin extends Plugin {
 				// 实际执行命令
 				this.eventHandler.clearDocument(activeLeaf);
 				return true;
-			},
-			hotkeys: [
-				{
-					modifiers: ['Mod', 'Shift'],
-					key: 'c',
-				}
-			]
+			}
 		});
 		
 		// 注册命令：打开插件设置
@@ -189,13 +173,7 @@ export class SmartReaderPlugin extends Plugin {
 			callback: () => {
 				this.app.setting.open();
 				this.app.setting.openTabById('obsidian-smart-reader');
-			},
-			hotkeys: [
-				{
-					modifiers: ['Mod', 'Shift'],
-					key: 's',
-				}
-			]
+			}
 		});
 		
 		// 添加测试国际化命令
@@ -294,7 +272,7 @@ export class SmartReaderPlugin extends Plugin {
 	}
 
 	onunload() {
-		console.log('Unloading SmartReader plugin');
+		logger.info('卸载 SmartReader 插件');
 	}
 
 	async loadSettings() {
@@ -313,12 +291,10 @@ export class SmartReaderPlugin extends Plugin {
 		this.documentProcessor = new DocumentProcessor(this.settings, this.progressIndicator);
 		
 		// 更新事件处理器中的文档处理器
-		if (this.eventHandler) {
-			this.eventHandler.updateDocumentProcessor(this.documentProcessor);
-		}
+		// 文档处理器现在在DocumentOperationHandler中管理
 		
 		// 更新CSS变量
-		document.documentElement.style.setProperty('--highlight-color', this.settings.highlightColor);
+		// 现在通过ThemeManager统一管理样式
 	}
 	
 	/**
@@ -359,7 +335,7 @@ export class SmartReaderPlugin extends Plugin {
 		document.head.appendChild(styleEl);
 		
 		// 设置CSS变量
-		document.documentElement.style.setProperty('--highlight-color', this.settings.highlightColor);
+        // 现在通过ThemeManager统一管理样式;
 	}
 	
 	// 设置状态栏

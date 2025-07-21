@@ -1,6 +1,7 @@
 import { Notice, setIcon } from 'obsidian';
 import { t } from './i18n';
 import { SmartReaderPlugin } from './main';
+import { ThemeManager } from './theme-manager';
 
 /**
  * 进度指示器类
@@ -8,6 +9,7 @@ import { SmartReaderPlugin } from './main';
  */
 export class ProgressIndicator {
     private plugin: SmartReaderPlugin;
+    private themeManager: ThemeManager;
     private containerEl: HTMLElement;
     private progressBarEl: HTMLElement;
     private statusEl: HTMLElement | null = null;
@@ -17,6 +19,7 @@ export class ProgressIndicator {
     
     constructor(plugin: SmartReaderPlugin) {
         this.plugin = plugin;
+        this.themeManager = new ThemeManager();
         
         // 创建进度指示器容器
         this.containerEl = document.createElement('div');
@@ -131,7 +134,7 @@ export class ProgressIndicator {
         this.progress = Math.max(0, Math.min(100, progress));
         
         // 更新进度条宽度
-        this.progressBarEl.style.width = `${this.progress}%`;
+        this.themeManager.styleProgressBar(this.progressBarEl, this.progress);
         
         // 如果到达100%，显示完成
         if (this.progress >= 100) {

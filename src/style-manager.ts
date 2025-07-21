@@ -1,6 +1,7 @@
 import { MarkdownView, WorkspaceLeaf } from 'obsidian';
 import { SmartReaderPlugin } from './main';
 import { SmartReaderSettings } from './types';
+import { logger } from './logger';
 
 /**
  * 样式管理器类
@@ -19,7 +20,7 @@ export class StyleManager {
      * @param newStyle 新样式
      */
     public async onStyleChanged(oldStyle: string, newStyle: string): Promise<void> {
-        console.log(`Style changed from ${oldStyle} to ${newStyle}`);
+        logger.debug(`样式从 ${oldStyle} 切换到 ${newStyle}`);
         
         // 更新CSS变量
         this.updateCSSVariables();
@@ -33,10 +34,10 @@ export class StyleManager {
      * @param newColor 新颜色
      */
     public async onColorChanged(newColor: string): Promise<void> {
-        console.log(`Color changed to ${newColor}`);
+        logger.debug(`颜色更新为 ${newColor}`);
         
         // 更新CSS变量
-        document.documentElement.style.setProperty('--highlight-color', newColor);
+        // 颜色更新现在通过ThemeManager处理
         
         // 如果当前样式使用颜色，重新处理文档
         if (this.isColorBasedStyle(this.plugin.settings.highlightStyle)) {
@@ -98,7 +99,7 @@ export class StyleManager {
      * 更新CSS变量
      */
     private updateCSSVariables(): void {
-        document.documentElement.style.setProperty('--highlight-color', this.plugin.settings.highlightColor);
+        // 现在通过ThemeManager统一管理样式
     }
     
     /**

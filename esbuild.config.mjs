@@ -1,6 +1,7 @@
 import esbuild from "esbuild";
 import process from "process";
 import builtins from "builtin-modules";
+import { copyFileSync, existsSync, mkdirSync } from "fs";
 
 const banner =
 `/*
@@ -41,9 +42,42 @@ const context = await esbuild.context({
 	minify: prod,
 });
 
+// 确保build目录存在
+if (!existsSync("build")) {
+	mkdirSync("build");
+}
+
 if (prod) {
 	await context.rebuild();
+	
+	// 生产模式：将构建文件输出到build目录
+	console.log("✅ 生产构建完成，输出目录: build/");
+	console.log("📁 构建文件:");
+	console.log("   - build/main.js");
+	console.log("   - manifest.json");
+	console.log("   - styles.css");
+	
+	// 复制必要文件到build目录
+	copyFileSync("manifest.json", "build/manifest.json");
+	copyFileSync("styles.css", "build/styles.css");
+	
 	process.exit(0);
 } else {
+	// 开发模式：同时输出到根目录供Obsidian开发使用
+	await context.rebuild();
+	
+	// 复制开发文件到根目录
+	if (existsSync("build/main.js")) {
+		copyFileSync("build/main.js", "main.js");
+	}
+	if (existsSync("build/main.js.map")) {
+		copyFileSync("build/main.js.map", "main.js.map");
+	}
+	
+	console.log("🔧 开发模式启动，文件监视中...");
+	console.log("📁 输出位置:");
+	console.log("   - build/main.js (构建输出)");
+	console.log("   - main.js (开发副本)");
+	
 	await context.watch();
 } 
